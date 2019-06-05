@@ -1,0 +1,44 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 03.05.2013 14:50:56
+
+newmtl Wood
+	Ns 54.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.4700 0.4700 0.4700
+	Ke 0.0000 0.0000 0.0000
+	map_Ka 20351_Old_Television_set,_1980's_style_diffuse_v1.jpg
+	map_Kd 20351_Old_Television_set,_1980's_style_diffuse_v1.jpg
+
+newmtl Metal
+	Ns 59.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.6750 0.6750 0.6750
+	Ke 0.0000 0.0000 0.0000
+	map_Ka 20351_Old_Television_set,_1980's_style_diffuse_v1.jpg
+	map_Kd 20351_Old_Television_set,_1980's_style_diffuse_v1.jpg
+
+newmtl Glass
+	Ns 75.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.6750 0.6750 0.6750
+	Ke 0.0000 0.0000 0.0000
+	map_Ka 20351_Old_Television_set,_1980's_style_diffuse_v1.jpg
+	map_Kd 20351_Old_Television_set,_1980's_style_diffuse_v1.jpg

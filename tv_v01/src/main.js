@@ -5,7 +5,11 @@ document.write('<script type="text/javascript" src="../../lib/three.js-r103/exam
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/libs/stats.min.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/libs/tween.min.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/libs/inflate.min.js"></script>');
+
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/FBXLoader_r90.js"></script>');
+document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader.js"></script>');
+//document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader2.js"></script>');
+
 document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/build/cannon.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/tools/threejs/CannonDebugRenderer.js"></script>');
 
@@ -14,6 +18,7 @@ document.write('<script type="text/javascript" src="src/objects/Radio.js"></scri
 document.write('<script type="text/javascript" src="src/objects/Floor.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/RadioFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TableFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/TVFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/BowlFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Lights.js"></script>');
 document.write('<script type="text/javascript" src="src/animation/Animation.js"></script>');
@@ -49,6 +54,12 @@ function main() {
     radioFromFile.rotation.y = -20 * DEG_TO_RAD;
     physics.addBox(radioFromFile, 3, 30, 20, 8);
     scene.add(radioFromFile);
+
+    var TvFromFile = new TVFromFile();
+    TvFromFile.position.set(30.0, 83.0, 10.0);
+    //TvFromFile.rotation.y = -20 * DEG_TO_RAD;
+    //physics.addBox(TvFromFile, 3, 30, 20, 8);
+    scene.add(TvFromFile);
 
     var table = new TableFromFile();
     physics.addBox(table, 0, 130, 3, 70, 0, 71.5, 0);
