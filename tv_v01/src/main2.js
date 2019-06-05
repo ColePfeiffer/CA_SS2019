@@ -1,4 +1,5 @@
 // External libraries
+
 document.write('<script type="text/javascript" src="../../lib/dat.gui-0.7.6/build/dat.gui.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/build/three.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/controls/OrbitControls.js"></script>');
@@ -15,6 +16,7 @@ document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/to
 
 // Own modules
 document.write('<script type="text/javascript" src="src/objects/Radio.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/TV.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Floor.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/RadioFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TableFromFile.js"></script>');
@@ -62,7 +64,6 @@ function main() {
     // #co
     camera.position.set(0, 0, 5);
     camera.lookAt(0, 0, 0); // Rotates the object to face a point in world space.
-
 
 
 

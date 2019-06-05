@@ -1,8 +1,8 @@
-Radio = function () {
+TV = function () {
 
     var radio = new THREE.Group();
 
-    var metallMaterial = new THREE.MeshStandardMaterial({color: 0xe7e7e7, roughness: 0.2, metalness: 0.4});
+    var metallMaterial = new THREE.MeshStandardMaterial({color: 0xE7E7E7, roughness: 0.2, metalness: 0.4});
 
     var korpusGeometry = new THREE.BoxGeometry(30, 20, 8);
     var korpusMaterial = new THREE.MeshLambertMaterial({
@@ -16,7 +16,6 @@ Radio = function () {
     korpusMaterial.combine = THREE.MixOperation;
     korpusMaterial.reflectivity = 0.1;
     var korpus = new THREE.Mesh(korpusGeometry, korpusMaterial);
-    korpus.castShadow = true;
     radio.add(korpus);
 
     var antenneGeometry = new THREE.CylinderGeometry(0.25, 0.25, 25, 32, 1, false);
@@ -25,13 +24,12 @@ Radio = function () {
     antenne.position.x = -13;
     antenne.position.y = 10.25;
     antenne.position.z = -2;
-    antenne.rotation.z = -90 * DEG_TO_RAD;
+    antenne.rotation.z = -70 * DEG_TO_RAD;
     antenne.name = "Antenne";
-    antenne.castShadow = true;
     radio.add(antenne);
 
     antennenAnimation = new Animation(antenne, AnimationType.ROTATION, AnimationAxis.Z);
-    antennenAnimation.setAmount(70 * DEG_TO_RAD);
+    antennenAnimation.setAmount(-20 * DEG_TO_RAD);
     antennenAnimation.setSpeed(40 * DEG_TO_RAD);
     antenne.userData = antennenAnimation;
 
@@ -52,11 +50,15 @@ Radio = function () {
     // ----------------
     var lautsprecherteilGeometry = new THREE.BoxGeometry(28, 11.5, 1);
     var lautsprecherteilMaterial = new THREE.MeshLambertMaterial({color: 0xFFEAD9});
+
     var lautsprecherMaterial = new THREE.MeshPhongMaterial({color: 0xFFEAD9});
     lautsprecherMaterial.bumpMap = new THREE.TextureLoader().load("src/images/lautsprecher.png");
     lautsprecherMaterial.bumpScale = 0.1;
+
     var materialArrayBump = [lautsprecherteilMaterial, lautsprecherteilMaterial, lautsprecherteilMaterial, lautsprecherteilMaterial, lautsprecherMaterial, lautsprecherteilMaterial];
+
     var lautsprecherteil = new THREE.Mesh(lautsprecherteilGeometry, materialArrayBump);
+
     lautsprecherteil.position.x = 0;
     lautsprecherteil.position.y = -3;
     lautsprecherteil.position.z = 3.75;
@@ -73,10 +75,8 @@ Radio = function () {
     var blendeMaterial = new THREE.MeshLambertMaterial({
         color: 0x222222
     });
-    var skalaMaterial = new THREE.MeshLambertMaterial({
-        color: 0xffffff
-    });
-    skalaMaterial.map = new THREE.TextureLoader().load('src/images/skala.png');
+    var skalaMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+    skalaMaterial.map = new THREE.TextureLoader().load("src/images/skala.png");
     var materialArray = [blendeMaterial, blendeMaterial, blendeMaterial, blendeMaterial, skalaMaterial, blendeMaterial];
     var blende = new THREE.Mesh(blendeGeometry, materialArray);
     bedienteil.add(blende);
@@ -151,7 +151,6 @@ Radio = function () {
     var griffGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     var griff = new THREE.Mesh(griffGeometry, metallMaterial);
     griff.position.z = -1.5;
-    griff.castShadow = true;
     haltegriff.add(griff);
 
     var griffachseGeometry = new THREE.CylinderGeometry(2, 2, 33, 32, 1, false);
