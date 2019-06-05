@@ -32,9 +32,17 @@ document.write('<script type="text/javascript" src="src/eventfunctions/executeKe
 
 const DEG_TO_RAD = Math.PI / 180;
 
+/*
+* Über globale Variablen und Scopes im Allgemeinen in JavaScript am Beispiel von renderer:
+*   renderer wird an einigen Stellen (z.B. updateAspectRatio) benötigt und wird deswegen als globale Variable definiert.
+*   Dies kann einerseits wie hier passieren oder durch das Weglassen der "var" oder "let" Deklarierung innerhalb der main()-Funktion (global-Kennzeichner). */
+let renderer = null;
+let camera = null;
+let scene = null;
+
 function main() {
 
-    let scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
     /* Camera
     * Parameter:
@@ -47,13 +55,15 @@ function main() {
     *       Wichtig für Performance-Einstellungen
     *
     * */
-    let camera = new THREE.PerspectiveCamera(45,
+    camera = new THREE.PerspectiveCamera(45,
         window.innerWidth / window.innerHeight,
         0.1, 1000);
 
     // #co
-    //camera.position.set(0, 150, 150);
-    //camera.lookAt(0, 83, 0);
+    camera.position.set(0, 0, 5);
+    camera.lookAt(0, 0, 0); // Rotates the object to face a point in world space.
+
+
 
 
     /* Renderer
@@ -61,20 +71,19 @@ function main() {
     *
     * */
     // #co antialias, why?
-    let renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: true});
 
     /*  Wir müssen die Größe des Renderers festlegen, alles außerhalb wird nicht gerendert
         Typischerweise wird die Größe auf die Fenstergröße des Browsers gesetzt.
         Bei Perfomance-Problemen sollte eine kleinere Größe gewählt werden, z.B. Width/2 und Height/2 */
     renderer.setSize(window.innerWidth, window.innerHeight);
-    //renderer.setClearColor(new THREE.Color(0x000000));
+    renderer.setClearColor(new THREE.Color(0x000000));
 
     //renderer.shadowMap.enabled = true;
 
-    // #c mal testen ob das auch geht
-    //document.body.appendChild( renderer.domElement );
-
     // Wir fügen den Renderer zum HTML Dokument hinzu
+    //document.body.appendChild( renderer.domElement );
+    // Alternativ:
     document.getElementById("3d_content").appendChild(renderer.domElement);
 
     // Enthält Verticles und Faces
@@ -88,13 +97,22 @@ function main() {
 
     scene.add(cube);
 
-    camera.position.z = 5;
+    /*
+    // https://threejs.org/docs/#manual/en/introduction/Drawing-lines
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3( -10, 0, 0) );
+    geometry.vertices.push(new THREE.Vector3( 0, 10, 0) );
+    geometry.vertices.push(new THREE.Vector3( 10, 0, 0) );
+
+    var line = new THREE.Line( geometry, material );
+    line.position.z = -25;
+    scene.add( line );
+    */
 
     function mainLoop() {
 
         //stats.begin();
 
-        //var delta = clock.getDelta();
 
         //physics.update(delta);
         //physicsVisualDebugger.update();
@@ -102,7 +120,7 @@ function main() {
         //einschalterAnimation.update(delta);
         //antennenAnimation.update(delta);
 
-        //TWEEN.update();
+
 
         //if (radioAnimationMixer != null)
         //   radioAnimationMixer.update(delta);
@@ -110,9 +128,6 @@ function main() {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
         renderer.render(scene, camera);
-
-        //stats.end();
-
 
         /*  Jedes Mal, wenn der Bildschirm aktualisiert wird, soll die Szene erneuert werden / neu gerendert werden
         *   requestAnimationFrame pausiert, wenn der Benutzer zu einem anderen Tab wechselt. */
@@ -124,110 +139,7 @@ function main() {
     window.onresize = updateAspectRatio;
     window.onmousemove = calculateMousePosition;
     window.onclick = executeRaycast;
-    window.onkeydown = keyDownAction;
-    window.onkeyup = keyUpAction;
-};
+}
 
 
 window.onload = main;
-
-
-    /*
-        physics = new Physics();
-    physics.initialize(0, -200, 0, 1 / 120, true);
-    physicsVisualDebugger = new THREE.CannonDebugRenderer(scene, physics.getWorld());
-
-    var axes = new THREE.AxesHelper(20);
-    scene.add(axes);
-
-
-    var radio = new Radio();
-    radio.position.set(-30.0, 83.0, 10.0);
-    radio.rotation.y = 20 * DEG_TO_RAD;
-    physics.addBox(radio, 3, 30, 20, 8);
-    scene.add(radio);
-
-    var radioFromFile = new RadioFromFile();
-    radioFromFile.position.set(30.0, 83.0, 10.0);
-    radioFromFile.rotation.y = -20 * DEG_TO_RAD;
-    physics.addBox(radioFromFile, 3, 30, 20, 8);
-    scene.add(radioFromFile);
-
-    var TvFromFile = new TVFromFile();
-    TvFromFile.position.set(30.0, 83.0, 10.0);
-    //TvFromFile.rotation.y = -20 * DEG_TO_RAD;
-    //physics.addBox(TvFromFile, 3, 30, 20, 8);
-    scene.add(TvFromFile);
-
-    var table = new TableFromFile();
-    physics.addBox(table, 0, 130, 3, 70, 0, 71.5, 0);
-    scene.add(table);
-
-    var bowl = new BowlFromFile();
-    bowl.position.set(0, 73, -15);
-    physics.addCylinder(bowl, 1, 20, 11, 13, 32, 0, 13 / 2, 0, -90 * DEG_TO_RAD, 0, 0);
-    scene.add(bowl);
-
-    scene.add(new Floor(200, 200, 8));
-
-    var lights = new Lights();
-    scene.add(lights.createAmbientLight());
-    var directionalLight = lights.createDirectionalLight(-30, 200, 100);
-    scene.add(directionalLight);
-
-
-
-    var orbitControls = new THREE.OrbitControls(camera);
-    orbitControls.target = new THREE.Vector3(0, 83, 0);
-    orbitControls.update();
-
-    var gui = new dat.GUI();
-    gui.add(directionalLight.position, "x", -100, 100);
-    gui.add(directionalLight.position, "y", -100, 100);
-    gui.add(directionalLight.position, "z", -100, 100);
-    gui.domElement.onmouseenter = function () {
-        orbitControls.enabled = false;
-    };
-    gui.domElement.onmouseleave = function () {
-        orbitControls.enabled = true;
-    };
-
-    var stats = new Stats();
-    stats.showPanel(0);
-    document.body.appendChild(stats.dom);
-
-
-    var clock = new THREE.Clock();
-
-    function mainLoop() {
-
-        stats.begin();
-
-        var delta = clock.getDelta();
-
-        physics.update(delta);
-        //physicsVisualDebugger.update();
-
-        einschalterAnimation.update(delta);
-        antennenAnimation.update(delta);
-
-        TWEEN.update();
-
-        if (radioAnimationMixer != null)
-            radioAnimationMixer.update(delta);
-
-        renderer.render(scene, camera);
-
-        stats.end();
-
-        requestAnimationFrame(mainLoop);
-    }
-
-    mainLoop();
-
-    window.onresize = updateAspectRatio;
-    window.onmousemove = calculateMousePosition;
-    window.onclick = executeRaycast;
-    window.onkeydown = keyDownAction;
-    window.onkeyup = keyUpAction;
-}*/
