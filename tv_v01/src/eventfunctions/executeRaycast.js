@@ -6,15 +6,17 @@ function executeRaycast(event) {
     raycaster.setFromCamera(mousePosition, camera);
 
     var intersects = raycaster.intersectObjects(scene.children, true);
-    console.log(mousePosition);
+    //console.log(mousePosition);
     if (intersects.length > 0) {
 
         var firstHit = intersects[0].object;
+        console.log(firstHit);
 
         intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 
 
-        if (firstHit.name === "Einschalter" || firstHit.name === "Antenne") {
+        if (firstHit.name === "antenna_Part_2" || firstHit.name === "antenna_Part_1"){
+            console.log("Starte Animation")
             firstHit.userData.toggleAnimationEndPosition();
 
         } else if (firstHit.name === "Tuner") {
@@ -26,6 +28,10 @@ function executeRaycast(event) {
                 firstHit.userData.forwardTween.stop();
                 firstHit.userData.backwardTween.start();
             }
+        } else if (firstHit.name === "antenna_Part_3" || firstHit.name === "antenna_Part_4"){
+            console.log("Starte animation")
+            aniAntennaPart3.toggleAnimationEndPosition();
+
         }
 
         if (firstHit.name === "EinschalterFBX") {

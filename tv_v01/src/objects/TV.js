@@ -179,21 +179,58 @@ TV = function () {
     antennaPart2.name = "antenna_Part_2";
     tv.add(antennaPart2);
 
+    // Mergen von Meshes in ein einziges Geometry-Objekt
     var antennaPart3Geo = new THREE.CylinderGeometry(0.125, 0.125, 12, 32, 1, false);
-    var antennaPart3 = new THREE.Mesh(antennaPart3Geo, metallMaterial);
-    antennaPart3.position.x = -25;
-    antennaPart3.position.y = 80;
-    antennaPart3.position.z = 8;
-    antennaPart3.name = "antenna_Part_3";
-    tv.add(antennaPart3);
-
     var antennaPart4Geo = new THREE.CylinderGeometry(0.35, 0.35, 1.5, 32, 1, false);
-    var antennaPart4 = new THREE.Mesh(antennaPart4Geo, metallMaterial);
-    antennaPart4.position.x = -25;
-    antennaPart4.position.y = 86;
-    antennaPart4.position.z = 8;
-    antennaPart4.name = "antenna_Part_4";
-    tv.add(antennaPart4);
+    var antenna34MergedGeo = new THREE.Geometry();
+
+    // Erzeugen eines Meshs für jede Geometry, die gemerged werden soll
+    var antennaPart3Mesh = new THREE.Mesh(antennaPart3Geo);
+    var antennaPart4Mesh = new THREE.Mesh(antennaPart4Geo);
+
+    // Y-Position des Meshes anpassen, sodass es nach dem Mergen richtig positioniert ist, sonst sitzt es zentriert
+    antennaPart4Mesh.position.y = 6;
+
+    // then call the merge method of the single geometry for each, passing the geometry and matrix of each into the method:
+    antennaPart3Mesh.updateMatrix(); // as needed
+    antenna34MergedGeo.merge(antennaPart3Mesh.geometry, antennaPart3Mesh.matrix);
+
+    antennaPart4Mesh.updateMatrix(); // as needed
+    antenna34MergedGeo.merge(antennaPart4Mesh.geometry, antennaPart4Mesh.matrix);
+
+    //Once merged, create a mesh from the single geometry and add to the scene:
+    var antenna34Merged = new THREE.Mesh(antenna34MergedGeo, metallMaterial);
+
+    antenna34Merged.position.x = -25;
+    antenna34Merged.position.y = 80;
+    antenna34Merged.position.z = 8;
+    antenna34Merged.name = "antenna_Part_3";
+    tv.add(antenna34Merged);
+
+    aniAntennaPart3 = new Animation(antenna34Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
+    aniAntennaPart3.setAmount(-11.5);
+    aniAntennaPart3.setSpeed(7);
+    antenna34Merged.userData = aniAntennaPart3;
+
+    antenna23Merged = new THREE.Object3D();
+    antenna23Merged.add(antenna34Merged);
+    antenna23Merged.add(antennaPart2);
+    //tv.add(antenna23Merged);
+
+    aniAntennaPart2 = new Animation(antenna23Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
+    aniAntennaPart2.setAmount(-18.5);
+    aniAntennaPart2.setSpeed(10);
+    antennaPart2.userData = aniAntennaPart2;
+
+    antenna123Merged = new THREE.Object3D();
+    antenna123Merged.add(antenna23Merged);
+    antenna123Merged.add(antennaPart1);
+    tv.add(antenna123Merged);
+
+    aniAntennaFull = new Animation(antenna123Merged, AnimationType.ROTATION, AnimationAxis.Z);
+    aniAntennaFull.setAmount(30 * DEG_TO_RAD);
+    aniAntennaFull.setSpeed(40 * DEG_TO_RAD);
+    antennaPart1.userData = aniAntennaFull;
 
     //var union = threecsg.union(marker, sphere , cubeMaterial );
     //scene.add(union);

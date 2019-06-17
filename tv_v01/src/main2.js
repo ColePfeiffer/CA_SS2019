@@ -130,10 +130,16 @@ function main() {
     //physics.addBox(radio, 3, 30, 20, 8);
     scene.add(tv);
 
+    var stats = new Stats();
+    stats.showPanel(0);
+    document.body.appendChild(stats.dom);
+
+    var clock = new THREE.Clock();
+
     function mainLoop() {
 
-        //stats.begin();
-
+        stats.begin();
+        var delta = clock.getDelta();
 
         //physics.update(delta);
         //physicsVisualDebugger.update();
@@ -141,17 +147,19 @@ function main() {
         //einschalterAnimation.update(delta);
         //antennenAnimation.update(delta);
 
-
+        aniAntennaPart3.update(delta);
+        aniAntennaPart2.update(delta);
+        aniAntennaFull.update(delta);
 
         //if (radioAnimationMixer != null)
         //   radioAnimationMixer.update(delta);
 
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        //cube.rotation.x += 0.01;
+        //cube.rotation.y += 0.01;
 
         // Causes the renderer to redraw the scene every time the screen is refreshed
         renderer.render(scene, camera);
-
+        stats.end();
         /*  Jedes Mal, wenn der Bildschirm aktualisiert wird, soll die Szene erneuert werden / neu gerendert werden
         *   requestAnimationFrame pausiert, wenn der Benutzer zu einem anderen Tab wechselt. */
         requestAnimationFrame(mainLoop);
