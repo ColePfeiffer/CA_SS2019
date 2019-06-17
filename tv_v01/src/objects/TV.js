@@ -1,164 +1,219 @@
 TV = function () {
 
-    var radio = new THREE.Group();
+    let tv = new THREE.Object3D();
 
-    var metallMaterial = new THREE.MeshStandardMaterial({color: 0xE7E7E7, roughness: 0.2, metalness: 0.4});
+    // ____ Materials ____
+    let metallMaterial = new THREE.MeshStandardMaterial({color: 0xe7e7e7, roughness: 0.2, metalness: 0.4});
 
-    var korpusGeometry = new THREE.BoxGeometry(30, 20, 8);
-    var korpusMaterial = new THREE.MeshLambertMaterial({
-        color: 0xE77C3E
-    });
-    var path = "../../lib/three.js-r103/examples/textures/cube/Bridge2/";
-    var images = [path + "posx.jpg", path + "negx.jpg", path + "posy.jpg", path + "negy.jpg", path + "posz.jpg", path + "negz.jpg"];
-    var cubeTextur = new THREE.CubeTextureLoader().load(images);
-    cubeTextur.mapping = THREE.CubeReflectionMapping;
-    korpusMaterial.envMap = cubeTextur;
-    korpusMaterial.combine = THREE.MixOperation;
-    korpusMaterial.reflectivity = 0.1;
-    var korpus = new THREE.Mesh(korpusGeometry, korpusMaterial);
-    radio.add(korpus);
+    // ____ Elements _____
+    let corpusGeo = new THREE.BoxGeometry(65, 40, 30);
+    let corpusMat = new THREE.MeshLambertMaterial({color: 0xc9a2d3});
+    let corpus = new THREE.Mesh(corpusGeo, corpusMat);
+    corpus.position.set(0,0,0);
+    tv.add(corpus);
 
-    var antenneGeometry = new THREE.CylinderGeometry(0.25, 0.25, 25, 32, 1, false);
-    antenneGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 12.5, 0));
-    var antenne = new THREE.Mesh(antenneGeometry, metallMaterial);
-    antenne.position.x = -13;
-    antenne.position.y = 10.25;
-    antenne.position.z = -2;
-    antenne.rotation.z = -70 * DEG_TO_RAD;
-    antenne.name = "Antenne";
-    radio.add(antenne);
+    let screenGeo = new THREE.BoxGeometry(45, 33, 5);
+    let screenMat = new THREE.MeshLambertMaterial({color: 0x302f30});
+    let screen = new THREE.Mesh(screenGeo, screenMat);
+    screen.position.x = -6;
+    screen.position.y = 0;
+    screen.position.z = 15;
+    screen.name = "Screen";
+    //screen.castShadow(true);
+    tv.add(screen);
 
-    antennenAnimation = new Animation(antenne, AnimationType.ROTATION, AnimationAxis.Z);
-    antennenAnimation.setAmount(-20 * DEG_TO_RAD);
-    antennenAnimation.setSpeed(40 * DEG_TO_RAD);
-    antenne.userData = antennenAnimation;
+    let panelGeo = new THREE.BoxGeometry(10, 30, 1.5);
+    let panelMat = new THREE.MeshLambertMaterial({color: 0xcea25a});
+    let panel = new THREE.Mesh(panelGeo, panelMat);
+    panel.position.x = 24;
+    panel.position.y = 0;
+    panel.position.z = 15
+    panel.name = "Panel";
+    tv.add(panel);
 
-    var einschalterGeometry = new THREE.BoxGeometry(3, 1, 1);
-    var einschalter = new THREE.Mesh(einschalterGeometry, metallMaterial);
-    einschalter.position.x = 10;
-    einschalter.position.y = 10.5;
-    einschalter.position.z = 0;
-    einschalter.name = "Einschalter";
-    radio.add(einschalter);
+    let channelGeo = new THREE.CylinderGeometry(2.5, 2.5, 5, 32, 1, false);
+    //let channelMat = new THREE.MeshLambertMaterial({color: 0x302f30});
+    let channel = new THREE.Mesh(channelGeo, metallMaterial);
+    channel.position.x = 24;
+    channel.position.y = 10;
+    channel.position.z = 15;
+    channel.rotation.x = 90 * DEG_TO_RAD;
+    channel.name = "Channel";
+    tv.add(channel);
 
-    einschalterAnimation = new Animation(einschalter, AnimationType.TRANSLATION, AnimationAxis.Y);
-    einschalterAnimation.setAmount(-0.5);
-    einschalterAnimation.setSpeed(2);
-    einschalter.userData = einschalterAnimation;
-
-    // Lautsprecherteil
-    // ----------------
-    var lautsprecherteilGeometry = new THREE.BoxGeometry(28, 11.5, 1);
-    var lautsprecherteilMaterial = new THREE.MeshLambertMaterial({color: 0xFFEAD9});
-
-    var lautsprecherMaterial = new THREE.MeshPhongMaterial({color: 0xFFEAD9});
-    lautsprecherMaterial.bumpMap = new THREE.TextureLoader().load("src/images/lautsprecher.png");
-    lautsprecherMaterial.bumpScale = 0.1;
-
-    var materialArrayBump = [lautsprecherteilMaterial, lautsprecherteilMaterial, lautsprecherteilMaterial, lautsprecherteilMaterial, lautsprecherMaterial, lautsprecherteilMaterial];
-
-    var lautsprecherteil = new THREE.Mesh(lautsprecherteilGeometry, materialArrayBump);
-
-    lautsprecherteil.position.x = 0;
-    lautsprecherteil.position.y = -3;
-    lautsprecherteil.position.z = 3.75;
-    radio.add(lautsprecherteil);
-
-    // Bedienteil
-    // ----------
-    var bedienteil = new THREE.Group();
-    bedienteil.position.x = 0;
-    bedienteil.position.y = 6.1;
-    bedienteil.position.z = 3.75;
-
-    var blendeGeometry = new THREE.BoxGeometry(28, 5.5, 1);
-    var blendeMaterial = new THREE.MeshLambertMaterial({
-        color: 0x222222
-    });
-    var skalaMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-    skalaMaterial.map = new THREE.TextureLoader().load("src/images/skala.png");
-    var materialArray = [blendeMaterial, blendeMaterial, blendeMaterial, blendeMaterial, skalaMaterial, blendeMaterial];
-    var blende = new THREE.Mesh(blendeGeometry, materialArray);
-    bedienteil.add(blende);
-
-    var frequenzskalaGeometry = new THREE.BoxGeometry(15, 2, 1);
-    var frequenzskalaMaterial = new THREE.MeshLambertMaterial({
-        color: 0xFFFFFF,
-        transparent: true,
-        opacity: 0.3
-    });
-    var frequenzskala = new THREE.Mesh(frequenzskalaGeometry, frequenzskalaMaterial);
-    frequenzskala.position.z = 0.2;
-    bedienteil.add(frequenzskala);
-
-    var markerGeometry = new THREE.BoxGeometry(0.2, 2, 1);
-    var markerMaterial = new THREE.MeshLambertMaterial({
+    var adjusterGeo = new THREE.BoxGeometry(4, 0.8, 1.5);
+    var adjusterMat = new THREE.MeshLambertMaterial({
         color: 0xFF0000
     });
-    var marker = new THREE.Mesh(markerGeometry, markerMaterial);
-    marker.position.x = -4;
-    marker.position.z = 0.3;
-    bedienteil.add(marker);
 
-    var tunerGeometry = new THREE.CylinderGeometry(1.5, 1.5, 2.5, 32, 1, false);
-    var tuner = new THREE.Mesh(tunerGeometry, metallMaterial);
-    tuner.position.x = -10;
-    tuner.position.y = 0;
-    tuner.position.z = 1;
-    tuner.rotation.x = 90 * DEG_TO_RAD;
-    tuner.name = "Tuner";
-    bedienteil.add(tuner);
+    var adjusterChannel = new THREE.Mesh(adjusterGeo, adjusterMat);
+    adjusterChannel.position.x = 24;
+    adjusterChannel.position.y = 10;
+    adjusterChannel.position.z = 17.5;
+    adjusterChannel.name = "Adjuster_Channel";
+    tv.add(adjusterChannel);
 
-    var tweens = {
-        forward: false,
-        forwardTween: new TWEEN.Tween(marker.position).to(new THREE.Vector3(marker.position.x + 8, marker.position.y, marker.position.z), 2000).easing(TWEEN.Easing.Quadratic.Out),
-        backwardTween: new TWEEN.Tween(marker.position).to(new THREE.Vector3(marker.position.x, marker.position.y, marker.position.z), 2000).easing(TWEEN.Easing.Quadratic.Out)
-    };
-    tuner.userData = tweens;
-
-    var volumeGeometry = new THREE.CylinderGeometry(1.5, 1.5, 2.5, 32, 1, false);
-    var volume = new THREE.Mesh(volumeGeometry, metallMaterial);
-    volume.position.x = 10;
-    volume.position.y = 0;
-    volume.position.z = 1;
+    var volumeGeo = new THREE.CylinderGeometry(2.5, 2.5, 5, 32, 1, false);
+    var volume = new THREE.Mesh(volumeGeo, metallMaterial);
+    volume.position.x = 24;
+    volume.position.y = 3.5;
+    volume.position.z = 15;
     volume.rotation.x = 90 * DEG_TO_RAD;
     volume.name = "Volume";
-    bedienteil.add(volume);
+    tv.add(volume);
 
-    radio.add(bedienteil);
+    //var adjusterGeo = new THREE.BoxGeometry(4, 0.8, 1.5);
+    //var adjusterMat = new THREE.MeshLambertMaterial({color: 0xFF0000});
+    var adjusterVolume = new THREE.Mesh(adjusterGeo, adjusterMat);
+    adjusterVolume.position.x = 24;
+    adjusterVolume.position.y = 3.5;
+    adjusterVolume.position.z = 17.5;
+    adjusterVolume.name = "Adjuster_Volume";
+    tv.add(adjusterVolume);
 
-    // Haltegriff
-    // ----------
-    var haltegriff = new THREE.Group();
-    haltegriff.position.y = 5;
+    var muteButtonGeo = new THREE.CylinderGeometry(2, 2, 4, 32, 1, false);
+    var muteButton = new THREE.Mesh(muteButtonGeo, metallMaterial);
+    muteButton.position.x = 24;
+    muteButton.position.y = -2;
+    muteButton.position.z = 15;
+    muteButton.rotation.x = 90 * DEG_TO_RAD;
+    muteButton.name = "Mute_Button";
+    tv.add(muteButton);
 
-    var shape = new THREE.Shape();
-    shape.moveTo(-16, 0);
-    shape.lineTo(-16, 10);
-    shape.lineTo(16, 10);
-    shape.lineTo(16, 0);
-    shape.lineTo(15.5, 0);
-    shape.lineTo(15.5, 9.5);
-    shape.lineTo(-15.5, 9.5);
-    shape.lineTo(-15.5, 0);
-    shape.lineTo(-16, 0);
+    var muteButtonInnerGeo = new THREE.SphereGeometry(1.7,10, 10);
+    var muteButtonInnerMat = new THREE.MeshLambertMaterial({
+        color: 0xFF0000
+    });
+    var muteButtonInner = new THREE.Mesh(muteButtonInnerGeo, muteButtonInnerMat);
+    muteButtonInner.position.x = 24;
+    muteButtonInner.position.y = -2;
+    muteButtonInner.position.z = 16;
+    muteButtonInner.name = "Mute_Button_Inner";
+    tv.add(muteButtonInner);
 
-    var extrudeSettings = {
-        steps: 1,
-        depth: 3,
-        bevelEnabled: false
-    };
-    var griffGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-    var griff = new THREE.Mesh(griffGeometry, metallMaterial);
-    griff.position.z = -1.5;
-    haltegriff.add(griff);
+    var onOffButtonGeo = new THREE.CylinderGeometry(2, 2, 4, 32, 1, false);
+    var onOffButton = new THREE.Mesh(onOffButtonGeo, metallMaterial);
+    onOffButton.position.x = 24;
+    onOffButton.position.y = -7;
+    onOffButton.position.z = 15;
+    onOffButton.rotation.x = 90 * DEG_TO_RAD;
+    onOffButton.name = "OnOff_Button";
+    tv.add(onOffButton);
 
-    var griffachseGeometry = new THREE.CylinderGeometry(2, 2, 33, 32, 1, false);
-    var griffachse = new THREE.Mesh(griffachseGeometry, metallMaterial);
-    griffachse.rotation.z = 90 * DEG_TO_RAD;
-    haltegriff.add(griffachse);
 
-    radio.add(haltegriff);
+    var onOffButtonInnerGeo = new THREE.SphereGeometry(1.7,10, 10);
+    var onOffButtonInnerMat = new THREE.MeshLambertMaterial({
+        color: 0xFF0000
+    });
+    var onOffButtonInner = new THREE.Mesh(onOffButtonInnerGeo, onOffButtonInnerMat);
+    onOffButtonInner.position.x = 24;
+    onOffButtonInner.position.y = -7;
+    onOffButtonInner.position.z = 16;
+    onOffButtonInner.name = "OnOff_Button_Inner";
+    tv.add(onOffButtonInner);
+
+    let freqGeo = new THREE.BoxGeometry(6, 0.8, 0.6);
+    let freqMat = new THREE.MeshLambertMaterial({
+        color: 0xc00FF00
+        //transparent: false,
+        //opacity: 0.3
+    });
+    let freq = new THREE.Mesh(freqGeo, freqMat);
+    freq.position.x = 24; // <--->
+    freq.position.y = -10.5; // Höhe
+    freq.position.z = 16; // tiefe
+    tv.add(freq);
+
+    var markerFreqGeo = new THREE.BoxGeometry(0.5, 0.8, 1);
+    var markerFreqMat = new THREE.MeshLambertMaterial({
+        color: 0xFF0000
+    });
+    var markerFreq = new THREE.Mesh(markerFreqGeo, markerFreqMat);
+    markerFreq.position.x = 24;
+    markerFreq.position.y = -10.5;
+    markerFreq.position.z = 16;
+    tv.add(markerFreq);
+
+    let freq2 = new THREE.Mesh(freqGeo, freqMat);
+    freq2.position.x = 24; // <--->
+    freq2.position.y = -12.5; // Höhe
+    freq2.position.z = 16; // tiefe
+    tv.add(freq2);
+
+    var markerFreq2 = new THREE.Mesh(markerFreqGeo, markerFreqMat);
+    markerFreq2.position.x = 24;
+    markerFreq2.position.y = -12.5;
+    markerFreq2.position.z = 16;
+    tv.add(markerFreq2);
+
+    var antennaPlateGeo = new THREE.CylinderGeometry(5, 5, 1.5, 32, 1, false);
+    var antennaPlate = new THREE.Mesh(antennaPlateGeo, metallMaterial);
+    antennaPlate.position.x = -25;
+    antennaPlate.position.y = 20;
+    antennaPlate.position.z = 8;
+    //antennaPlate.rotation.x = 90 * DEG_TO_RAD;
+    antennaPlate.name = "antenna_Plate";
+    tv.add(antennaPlate);
+
+    var antennaBaseGeo = new THREE.SphereGeometry(2,10, 10);
+    var antennaBase = new THREE.Mesh(antennaBaseGeo, metallMaterial);
+    antennaBase.position.x = -25;
+    antennaBase.position.y = 20;
+    antennaBase.position.z = 8;
+    antennaBase.name = "antenna_Base";
+    tv.add(antennaBase);
+
+    var antennaPart1Geo = new THREE.CylinderGeometry(0.5, 0.5, 33, 32, 1, false);
+    var antennaPart1 = new THREE.Mesh(antennaPart1Geo, metallMaterial);
+    antennaPart1.position.x = -25;
+    antennaPart1.position.y = 38;
+    antennaPart1.position.z = 8;
+    antennaPart1.name = "antenna_Part_1";
+    tv.add(antennaPart1);
+
+    var antennaPart2Geo = new THREE.CylinderGeometry(0.3, 0.3, 20, 32, 1, false);
+    var antennaPart2 = new THREE.Mesh(antennaPart2Geo, metallMaterial);
+    antennaPart2.position.x = -25;
+    antennaPart2.position.y = 64;
+    antennaPart2.position.z = 8;
+    antennaPart2.name = "antenna_Part_2";
+    tv.add(antennaPart2);
+
+    var antennaPart3Geo = new THREE.CylinderGeometry(0.125, 0.125, 12, 32, 1, false);
+    var antennaPart3 = new THREE.Mesh(antennaPart3Geo, metallMaterial);
+    antennaPart3.position.x = -25;
+    antennaPart3.position.y = 80;
+    antennaPart3.position.z = 8;
+    antennaPart3.name = "antenna_Part_3";
+    tv.add(antennaPart3);
+
+    var antennaPart4Geo = new THREE.CylinderGeometry(0.35, 0.35, 1.5, 32, 1, false);
+    var antennaPart4 = new THREE.Mesh(antennaPart4Geo, metallMaterial);
+    antennaPart4.position.x = -25;
+    antennaPart4.position.y = 86;
+    antennaPart4.position.z = 8;
+    antennaPart4.name = "antenna_Part_4";
+    tv.add(antennaPart4);
+
+    //var union = threecsg.union(marker, sphere , cubeMaterial );
+    //scene.add(union);
+
+    //var subtract = threecsg. subtract cube , sphere , cubeMaterial );
+    //scene.add(subtract);
+    //var intersect = threecsg. intersect cube , sphere , cubeMaterial
+    //scene.add(intersect);
+
+    /*
+    // https://threejs.org/docs/#manual/en/introduction/Drawing-lines
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3( -10, 0, 0) );
+    geometry.vertices.push(new THREE.Vector3( 0, 10, 0) );
+    geometry.vertices.push(new THREE.Vector3( 10, 0, 0) );
+
+    var line = new THREE.Line( geometry, material );
+    line.position.z = -25;
+    scene.add( line );
+    */
 
     return tv;
 }
