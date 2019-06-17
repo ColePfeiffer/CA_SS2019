@@ -30,7 +30,7 @@ function executeRaycast(event) {
             }
         } else if (firstHit.name === "antenna_Part_3" || firstHit.name === "antenna_Part_4"){
             console.log("Starte animation")
-            aniAntennaPart3.toggleAnimationEndPosition();
+            aniAntennaPart34Retract.toggleAnimationEndPosition();
 
         }
 

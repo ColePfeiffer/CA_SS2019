@@ -147,9 +147,9 @@ function main() {
         //einschalterAnimation.update(delta);
         //antennenAnimation.update(delta);
 
-        aniAntennaPart3.update(delta);
-        aniAntennaPart2.update(delta);
-        aniAntennaFull.update(delta);
+        aniAntennaPart34Retract.update(delta);
+        aniAntennaPart234Retract.update(delta);
+        aniAntennaFullRotation90Degrees.update(delta);
 
         //if (radioAnimationMixer != null)
         //   radioAnimationMixer.update(delta);

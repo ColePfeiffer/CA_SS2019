@@ -163,23 +163,28 @@ TV = function () {
     antennaBase.name = "antenna_Base";
     tv.add(antennaBase);
 
-    var antennaPart1Geo = new THREE.CylinderGeometry(0.5, 0.5, 33, 32, 1, false);
+    var antennaPart1Geo = new THREE.CylinderGeometry(0.5, 0.5, 33, 20, 1, false);
+    /*  Folgendes ist erforderlich, um den Drehpunkt des Objekts zu verschieben.
+        Normalerweise sitzt der nämlich genau in der Mitte, wir wollen aber um unteren Ende rotieren...
+        aus diesem Grund teilen wir die Höhe des Elements durch 2 und setzen unsere y-Position auf diesen Punkt.
+     */
+    antennaPart1Geo.applyMatrix(new THREE.Matrix4().makeTranslation(0, 16.5, 0));
     var antennaPart1 = new THREE.Mesh(antennaPart1Geo, metallMaterial);
     antennaPart1.position.x = -25;
-    antennaPart1.position.y = 38;
+    antennaPart1.position.y = 21.5; //38
     antennaPart1.position.z = 8;
     antennaPart1.name = "antenna_Part_1";
-    tv.add(antennaPart1);
+
 
     var antennaPart2Geo = new THREE.CylinderGeometry(0.3, 0.3, 20, 32, 1, false);
     var antennaPart2 = new THREE.Mesh(antennaPart2Geo, metallMaterial);
-    antennaPart2.position.x = -25;
-    antennaPart2.position.y = 64;
-    antennaPart2.position.z = 8;
+    /*  Da wir alle weiteren Antennen-Teile zu antennaPart1 hinzufügen,
+        brauchen wir die x und y-Position nicht weiter zu beachten. Die Grundposition wird auf die vom Hauptobjekt gesetzt.
+        Siehe Zeile 229. */
+    antennaPart2.position.y = 43;
     antennaPart2.name = "antenna_Part_2";
-    tv.add(antennaPart2);
 
-    // Mergen von Meshes in ein einziges Geometry-Objekt
+    // Mergen von Meshes in ein einziges Geometry-Objekt, in diesem Fall Antennenpart 3 und 4
     var antennaPart3Geo = new THREE.CylinderGeometry(0.125, 0.125, 12, 32, 1, false);
     var antennaPart4Geo = new THREE.CylinderGeometry(0.35, 0.35, 1.5, 32, 1, false);
     var antenna34MergedGeo = new THREE.Geometry();
@@ -188,7 +193,7 @@ TV = function () {
     var antennaPart3Mesh = new THREE.Mesh(antennaPart3Geo);
     var antennaPart4Mesh = new THREE.Mesh(antennaPart4Geo);
 
-    // Y-Position des Meshes anpassen, sodass es nach dem Mergen richtig positioniert ist, sonst sitzt es zentriert
+    // Y-Position des einen Meshes anpassen, sodass es nach dem Mergen richtig positioniert ist, sonst sitzt es zentriert
     antennaPart4Mesh.position.y = 6;
 
     // then call the merge method of the single geometry for each, passing the geometry and matrix of each into the method:
@@ -200,57 +205,35 @@ TV = function () {
 
     //Once merged, create a mesh from the single geometry and add to the scene:
     var antenna34Merged = new THREE.Mesh(antenna34MergedGeo, metallMaterial);
-
-    antenna34Merged.position.x = -25;
-    antenna34Merged.position.y = 80;
-    antenna34Merged.position.z = 8;
+    antenna34Merged.position.y = 59;
     antenna34Merged.name = "antenna_Part_3";
-    tv.add(antenna34Merged);
 
-    aniAntennaPart3 = new Animation(antenna34Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
-    aniAntennaPart3.setAmount(-11.5);
-    aniAntennaPart3.setSpeed(7);
-    antenna34Merged.userData = aniAntennaPart3;
+    // Animation für Part 3 und 4, die zu einem Mesh zusammengebündelt sind und beide bewegt werden
+    aniAntennaPart34Retract = new Animation(antenna34Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
+    aniAntennaPart34Retract.setAmount(-11.5);
+    aniAntennaPart34Retract.setSpeed(7);
+    antenna34Merged.userData = aniAntennaPart34Retract;
 
-    antenna23Merged = new THREE.Object3D();
-    antenna23Merged.add(antenna34Merged);
-    antenna23Merged.add(antennaPart2);
-    //tv.add(antenna23Merged);
+    /*  Bündeln von allen Antennen Elementen, die mitbewegt werden müssen,
+        wenn Part 2 ein- oder ausgezogen wird */
+    antenna234Merged = new THREE.Object3D();
+    antenna234Merged.add(antenna34Merged);
+    antenna234Merged.add(antennaPart2);
+    // Animation für Part 2
+    aniAntennaPart234Retract = new Animation(antenna234Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
+    aniAntennaPart234Retract.setAmount(-18.5);
+    aniAntennaPart234Retract.setSpeed(10);
+    antennaPart2.userData = aniAntennaPart234Retract;
 
-    aniAntennaPart2 = new Animation(antenna23Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
-    aniAntennaPart2.setAmount(-18.5);
-    aniAntennaPart2.setSpeed(10);
-    antennaPart2.userData = aniAntennaPart2;
-
-    antenna123Merged = new THREE.Object3D();
-    antenna123Merged.add(antenna23Merged);
-    antenna123Merged.add(antennaPart1);
-    tv.add(antenna123Merged);
-
-    aniAntennaFull = new Animation(antenna123Merged, AnimationType.ROTATION, AnimationAxis.Z);
-    aniAntennaFull.setAmount(30 * DEG_TO_RAD);
-    aniAntennaFull.setSpeed(40 * DEG_TO_RAD);
-    antennaPart1.userData = aniAntennaFull;
-
-    //var union = threecsg.union(marker, sphere , cubeMaterial );
-    //scene.add(union);
-
-    //var subtract = threecsg. subtract cube , sphere , cubeMaterial );
-    //scene.add(subtract);
-    //var intersect = threecsg. intersect cube , sphere , cubeMaterial
-    //scene.add(intersect);
-
-    /*
-    // https://threejs.org/docs/#manual/en/introduction/Drawing-lines
-    geometry = new THREE.Geometry();
-    geometry.vertices.push(new THREE.Vector3( -10, 0, 0) );
-    geometry.vertices.push(new THREE.Vector3( 0, 10, 0) );
-    geometry.vertices.push(new THREE.Vector3( 10, 0, 0) );
-
-    var line = new THREE.Line( geometry, material );
-    line.position.z = -25;
-    scene.add( line );
-    */
-
+    /*  Wir fügen alle bewegbaren Antennen-Elemente zu antennaPart1 hinzu,
+        weil anhand dieses Teils gedreht werden soll und sich alle übrigen Elemente mitbewegen müssen. */
+    antennaPart1.add(antenna234Merged);
+    tv.add(antennaPart1);
+    // Animation für Part 1 der Antenne, die die gesamte Antenne rotieren lässt
+    aniAntennaFullRotation90Degrees = new Animation(antennaPart1, AnimationType.ROTATION, AnimationAxis.Z);
+    aniAntennaFullRotation90Degrees.setAmount(-90 * DEG_TO_RAD);
+    aniAntennaFullRotation90Degrees.setSpeed(50 * DEG_TO_RAD);
+    antennaPart1.userData = aniAntennaFullRotation90Degrees;
+    
     return tv;
 }
