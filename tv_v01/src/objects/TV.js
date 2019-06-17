@@ -160,5 +160,5 @@ TV = function () {
 
     radio.add(haltegriff);
 
-    return radio;
+    return tv;
 }

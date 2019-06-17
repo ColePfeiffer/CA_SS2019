@@ -2,13 +2,17 @@ raycaster = new THREE.Raycaster();
 
 function executeRaycast(event) {
 
+
     raycaster.setFromCamera(mousePosition, camera);
 
     var intersects = raycaster.intersectObjects(scene.children, true);
-
+    console.log(mousePosition);
     if (intersects.length > 0) {
 
         var firstHit = intersects[0].object;
+
+        intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+
 
         if (firstHit.name === "Einschalter" || firstHit.name === "Antenne") {
             firstHit.userData.toggleAnimationEndPosition();
