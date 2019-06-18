@@ -15,9 +15,12 @@ function executeRaycast(event) {
         intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 
 
-        if (firstHit.name === "antenna_Part_2" || firstHit.name === "antenna_Part_1"){
+        if (firstHit.name === "antenna_Part_2" || firstHit.name === "antenna_Part_1" || firstHit.name === "Adjuster_Channel"
+        || firstHit.name === "Adjuster_Volume"
+        || firstHit.name === "Mute_Button_Inner"){
             console.log("Starte Animation")
             firstHit.userData.toggleAnimationEndPosition();
+            firstHit.userData.toggleAnimationStartPosition();
 
         } else if (firstHit.name === "Tuner") {
             firstHit.userData.forward = !firstHit.userData.forward;

@@ -53,6 +53,21 @@ TV = function () {
     adjusterChannel.name = "Adjuster_Channel";
     tv.add(adjusterChannel);
 
+    var adjusterExtrapieceGeo = new THREE.BoxGeometry(1, 0.9, 1);
+    var adjusterExtrapieceMat = new THREE.MeshLambertMaterial({
+        color: 0x000000
+    });
+    var adjusterExtrapieceChannel = new THREE.Mesh(adjusterExtrapieceGeo, adjusterExtrapieceMat);
+
+    adjusterExtrapieceChannel.position.x = -1.4;
+    adjusterExtrapieceChannel.position.z = 0.5;
+    adjusterChannel.add(adjusterExtrapieceChannel);
+
+    aniAdjusterChannelRotate = new Animation(adjusterChannel, AnimationType.ROTATION, AnimationAxis.Z);
+    aniAdjusterChannelRotate.setAmount(-180 * DEG_TO_RAD);
+    aniAdjusterChannelRotate.setSpeed(70 * DEG_TO_RAD);
+    adjusterChannel.userData = aniAdjusterChannelRotate;
+
     var volumeGeo = new THREE.CylinderGeometry(2.5, 2.5, 5, 32, 1, false);
     var volume = new THREE.Mesh(volumeGeo, metallMaterial);
     volume.position.x = 24;
@@ -70,6 +85,17 @@ TV = function () {
     adjusterVolume.position.z = 17.5;
     adjusterVolume.name = "Adjuster_Volume";
     tv.add(adjusterVolume);
+
+    var adjusterExtrapieceVolume = new THREE.Mesh(adjusterExtrapieceGeo, adjusterExtrapieceMat);
+
+    adjusterExtrapieceVolume.position.x = -1.4;
+    adjusterExtrapieceVolume.position.z = 0.5;
+    adjusterVolume.add(adjusterExtrapieceVolume);
+
+    aniAdjusterVolumeRotate = new Animation(adjusterVolume, AnimationType.ROTATION, AnimationAxis.Z);
+    aniAdjusterVolumeRotate.setAmount(-180 * DEG_TO_RAD);
+    aniAdjusterVolumeRotate.setSpeed(70 * DEG_TO_RAD);
+    adjusterVolume.userData = aniAdjusterVolumeRotate;
 
     var muteButtonGeo = new THREE.CylinderGeometry(2, 2, 4, 32, 1, false);
     var muteButton = new THREE.Mesh(muteButtonGeo, metallMaterial);
@@ -90,6 +116,15 @@ TV = function () {
     muteButtonInner.position.z = 16;
     muteButtonInner.name = "Mute_Button_Inner";
     tv.add(muteButtonInner);
+
+    // Animation für Part 2
+    aniButtonInnerPushed = new Animation(muteButtonInner, AnimationType.TRANSLATION, AnimationAxis.Z);
+    aniButtonInnerPushed.setAmount(-0.15);
+    aniButtonInnerPushed.setSpeed(3);
+
+    aniButtonInnerBack = new Animation(muteButtonInner, AnimationType.TRANSLATION, AnimationAxis.Z);
+    aniButtonInnerBack.setAmount(0.15);
+    aniButtonInnerBack.setSpeed(3);
 
     var onOffButtonGeo = new THREE.CylinderGeometry(2, 2, 4, 32, 1, false);
     var onOffButton = new THREE.Mesh(onOffButtonGeo, metallMaterial);

@@ -17,10 +17,12 @@ Animation = function (target, type, axis) {
     var animationAxis = axis;
     var animationAmount = 0;
     var animationSpeed = 0;
+    var executeAnimationThenRevert = false;
     var initialPositionIsEndPosition = true;
 
     var initialPosition = animationTarget.position.clone();
     var initialRotation = animationTarget.rotation.toVector3().clone();
+
 
     // Public methods
     this.setAmount = function (amount) {
@@ -33,6 +35,10 @@ Animation = function (target, type, axis) {
 
     this.toggleAnimationEndPosition = function () {
         initialPositionIsEndPosition = !initialPositionIsEndPosition;
+    }
+
+    this.setExecuteAnimationThenRevert = function(bool) {
+        executeAnimationThenRevert = bool;
     }
 
     this.update = function (delta) {

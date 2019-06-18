@@ -150,6 +150,9 @@ function main() {
         aniAntennaPart34Retract.update(delta);
         aniAntennaPart234Retract.update(delta);
         aniAntennaFullRotation90Degrees.update(delta);
+        aniAdjusterChannelRotate.update(delta);
+        aniAdjusterVolumeRotate.update(delta);
+        aniButtonInnerPushed.update(delta);
 
         //if (radioAnimationMixer != null)
         //   radioAnimationMixer.update(delta);
