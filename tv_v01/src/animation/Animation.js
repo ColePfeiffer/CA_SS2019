@@ -37,12 +37,11 @@ Animation = function (target, type, axis) {
         initialPositionIsEndPosition = !initialPositionIsEndPosition;
     }
 
-    this.setExecuteAnimationThenRevert = function(bool) {
+    this.IsExecuteAnimationThenRevert = function(bool) {
         executeAnimationThenRevert = bool;
     }
 
     this.update = function (delta) {
-
         var endPositionValue = 0;
 
         // Assume the initial position to be the end position
@@ -56,12 +55,13 @@ Animation = function (target, type, axis) {
         }
 
         // If the initial position is NOT the end position, add the animation amount
-        if (!initialPositionIsEndPosition)
+        if (!initialPositionIsEndPosition){
             endPositionValue += animationAmount;
+        }
+
 
         // Move as required
         switch (animationType) {
-
             case AnimationType.TRANSLATION:
 
                 var newTranslation = 0;
@@ -94,6 +94,6 @@ Animation = function (target, type, axis) {
                     animationTarget.rotation.setFromVector3(newRotation);
                 }
                 break;
-        }
+            }
     }
 }

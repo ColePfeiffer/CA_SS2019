@@ -121,10 +121,8 @@ TV = function () {
     aniButtonInnerPushed = new Animation(muteButtonInner, AnimationType.TRANSLATION, AnimationAxis.Z);
     aniButtonInnerPushed.setAmount(-0.15);
     aniButtonInnerPushed.setSpeed(3);
-
-    aniButtonInnerBack = new Animation(muteButtonInner, AnimationType.TRANSLATION, AnimationAxis.Z);
-    aniButtonInnerBack.setAmount(0.15);
-    aniButtonInnerBack.setSpeed(3);
+    aniButtonInnerPushed.IsExecuteAnimationThenRevert = true;
+    muteButtonInner.userData = aniButtonInnerPushed;
 
     var onOffButtonGeo = new THREE.CylinderGeometry(2, 2, 4, 32, 1, false);
     var onOffButton = new THREE.Mesh(onOffButtonGeo, metallMaterial);

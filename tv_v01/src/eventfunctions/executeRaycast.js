@@ -2,6 +2,7 @@ raycaster = new THREE.Raycaster();
 
 function executeRaycast(event) {
 
+    lastAnimationPlayed;
 
     raycaster.setFromCamera(mousePosition, camera);
 
@@ -20,7 +21,7 @@ function executeRaycast(event) {
         || firstHit.name === "Mute_Button_Inner"){
             console.log("Starte Animation")
             firstHit.userData.toggleAnimationEndPosition();
-            firstHit.userData.toggleAnimationStartPosition();
+            
 
         } else if (firstHit.name === "Tuner") {
             firstHit.userData.forward = !firstHit.userData.forward;
