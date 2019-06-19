@@ -8,7 +8,8 @@ document.write('<script type="text/javascript" src="../../lib/three.js-r103/exam
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/libs/inflate.min.js"></script>');
 
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/FBXLoader_r90.js"></script>');
-document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader.js"></script>');
+document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader.js"></script>');;
+document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/MTLLoader.js"></script>');
 //document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader2.js"></script>');
 
 document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/build/cannon.js"></script>');
@@ -20,7 +21,11 @@ document.write('<script type="text/javascript" src="src/objects/TV.js"></script>
 document.write('<script type="text/javascript" src="src/objects/Floor.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/RadioFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TableFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/Table2FromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TVFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/LampFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/ConsoleTableFromFile.js"></script>');
+
 document.write('<script type="text/javascript" src="src/objects/BowlFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Lights.js"></script>');
 document.write('<script type="text/javascript" src="src/animation/Animation.js"></script>');
@@ -66,8 +71,11 @@ function main() {
     camera.position.set(0, 0, 5);
     camera.lookAt(0, 0, 0); // Rotates the object to face a point in world space.
 
-    camera.position.set(0, 150, 150);
+    camera.position.set(0, 150, 150); // Frontalsicht TV
+    camera.position.set(0,60,300); // Weiter entfernt
+
     camera.lookAt(0, 83, 0);
+    //camera.lookAt(0,20,0);
 
 
     /* Renderer
@@ -130,6 +138,19 @@ function main() {
     //physics.addBox(radio, 3, 30, 20, 8);
     scene.add(tv);
 
+    var table = new Table2FromFile();
+    table.position.set(0,-20,0);
+    //table.scale();
+    //scene.add(table);
+
+    var consoleTable = new ConsoleTableFromFile();
+    consoleTable.position.set(0,-20,0);
+    scene.add(consoleTable);
+
+    var lamp = new LampFromFile();
+    lamp.position.set(-45,55,-20);
+    scene.add(lamp);
+
     var stats = new Stats();
     stats.showPanel(0);
     document.body.appendChild(stats.dom);
@@ -174,6 +195,7 @@ function main() {
     window.onmousemove = calculateMousePosition;
     //window.onclick = onDocumentMouseDown;
     window.onclick = executeRaycast; //#co siehe auch mouseposition und meine gammelfunktion
+    window.onkeydown = keyDownAction;
 }
 
 

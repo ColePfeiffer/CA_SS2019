@@ -7,7 +7,7 @@ TV = function () {
 
     // ____ Elements _____
     let corpusGeo = new THREE.BoxGeometry(65, 40, 30);
-    let corpusMat = new THREE.MeshLambertMaterial({color: 0xc9a2d3});
+    let corpusMat = new THREE.MeshLambertMaterial({color: 0xDF9136});
     let corpus = new THREE.Mesh(corpusGeo, corpusMat);
     corpus.position.set(0,0,0);
     tv.add(corpus);
