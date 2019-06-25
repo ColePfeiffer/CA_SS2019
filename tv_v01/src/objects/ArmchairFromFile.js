@@ -14,10 +14,12 @@ ArmchairFromFile = function () {
 
         object.traverse(function(child) {
             if(child.isMesh) {
+                if(child.id === 330564314){
+                    child.material.color.setHex(0x9D5821);
+                }
                 child.material.map.anisotropy = 8;
                 child.castShadow = true;
                 child.receiveShadow = true;
-                //child.material.color.setHex(0x9D5821);
 
             }else if(child.isLight) {
                 child.visible = false;

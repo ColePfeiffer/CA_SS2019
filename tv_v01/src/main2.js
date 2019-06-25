@@ -11,6 +11,7 @@ document.write('<script type="text/javascript" src="../../lib/three.js-r103/exam
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/MTLLoader.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/GLTFLoader.js"></script>');
+document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/DRACOLoader.js"></script>');
 
 // Cannon
 document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/build/cannon.js"></script>');
@@ -24,6 +25,7 @@ document.write('<script type="text/javascript" src="src/objects/RadioFromFile.js
 document.write('<script type="text/javascript" src="src/objects/TableFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Table2FromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TVFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/TVFromFileGlTF.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/LampFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ConsoleTableFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ArmchairFromFile.js"></script>');
@@ -137,7 +139,7 @@ function main() {
         0, 0, 0,          // eulerX, eulerY, eulerZ
         true);
     scene.add(tv);
-
+    /*
     var tvF = new TVFromFile();
     tvF.position.set(50,53, 10);
     tvF.rotateY(-22*DEG_TO_RAD);
@@ -148,6 +150,21 @@ function main() {
         0, 0, 0,          // eulerX, eulerY, eulerZ
         true);*/
     //scene.add(tvF);
+
+    var tvF = new TVFromFileGlTF();
+    tvF.position.set(50,53, 10);
+    //tvF.position.set(0,0,0);
+
+    tvF.rotateY(-22*DEG_TO_RAD);
+    /*
+    physics.addBox(tvF, 3, // visual object, mass
+        65, 40, 30,       // dimX, dimY, dimZ
+        0, 0, 0,          // offsetX, offsetY, offsetZ
+        0, 0, 0,          // eulerX, eulerY, eulerZ
+        true);*/
+    //tvF.scale.set(100,100,100);
+    scene.add(tvF);
+
 
 
     var tv2 = new TV();
@@ -188,7 +205,7 @@ function main() {
     armchair.position.set(-30,-50,175);
     armchair.rotateY(185*DEG_TO_RAD);
     //armchair.scale.set(0.7,0.7,0.7);
-    scene.add(armchair);
+    //scene.add(armchair);
 
     var stats = new Stats();
     stats.showPanel(0);
