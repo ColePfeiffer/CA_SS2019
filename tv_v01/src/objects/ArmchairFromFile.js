@@ -5,6 +5,7 @@ ArmchairFromFile = function () {
     var fbxloader = new THREE.FBXLoader();
 
     var path = 'src/models/Table/1.FBX';
+    path = 'src/models/Table/leatherSessel2.fbx';
 
 
     fbxloader.load(path, function (object) {
@@ -16,7 +17,7 @@ ArmchairFromFile = function () {
                 child.material.map.anisotropy = 8;
                 child.castShadow = true;
                 child.receiveShadow = true;
-                child.material.color.setHex(0x9D5821);
+                //child.material.color.setHex(0x9D5821);
 
             }else if(child.isLight) {
                 child.visible = false;

@@ -1,11 +1,11 @@
 TVFromFile = function () {
 
     var tv = new THREE.Group();
-    var objLoader = new THREE.OBJLoader();
+    var fbxloader = new THREE.FBXLoader();
 
     //radioAnimationMixer = null;
 
-    objLoader.load('src/models/TV_A/Old_TV.obj', function (object) {
+    fbxloader.load('src/models/BlenderTV/tv.fbx', function (object) {
 
         tv.add(object),
             // called when loading is in progresses

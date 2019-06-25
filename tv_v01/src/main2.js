@@ -1,5 +1,4 @@
 // External libraries
-
 document.write('<script type="text/javascript" src="../../lib/dat.gui-0.7.6/build/dat.gui.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/build/three.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/controls/OrbitControls.js"></script>');
@@ -7,15 +6,17 @@ document.write('<script type="text/javascript" src="../../lib/three.js-r103/exam
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/libs/tween.min.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/libs/inflate.min.js"></script>');
 
+// Loader
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/FBXLoader_r90.js"></script>');
-document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader.js"></script>');;
+document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/MTLLoader.js"></script>');
-//document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/OBJLoader2.js"></script>');
+document.write('<script type="text/javascript" src="../../lib/three.js-r103/examples/js/loaders/GLTFLoader.js"></script>');
 
+// Cannon
 document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/build/cannon.js"></script>');
 document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/tools/threejs/CannonDebugRenderer.js"></script>');
 
-// Own modules
+// Models
 document.write('<script type="text/javascript" src="src/objects/Radio.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TV.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Floor.js"></script>');
@@ -26,8 +27,9 @@ document.write('<script type="text/javascript" src="src/objects/TVFromFile.js"><
 document.write('<script type="text/javascript" src="src/objects/LampFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ConsoleTableFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ArmchairFromFile.js"></script>');
-
 document.write('<script type="text/javascript" src="src/objects/BowlFromFile.js"></script>');
+
+// Andere Skripts
 document.write('<script type="text/javascript" src="src/objects/Lights.js"></script>');
 document.write('<script type="text/javascript" src="src/animation/Animation.js"></script>');
 document.write('<script type="text/javascript" src="src/physics/Physics.js"></script>');
@@ -67,20 +69,12 @@ function main() {
     camera = new THREE.PerspectiveCamera(45,
         window.innerWidth / window.innerHeight,
         0.1, 1000);
-
-    // #co
-    camera.position.set(0, 0, 5);
-    camera.lookAt(0, 0, 0); // Rotates the object to face a point in world space.
-
     camera.position.set(0, 150, 150); // Frontalsicht TV
     camera.position.set(0,60,300); // Weiter entfernt
 
-    camera.lookAt(0, 83, 0);
-    //camera.lookAt(0,20,0);
-
+    camera.lookAt(0, 83, 0); // Rotates the object to face a point in world space.
 
     /* Renderer
-    *
     * */
     // Anti-Alias rundet quasi ab, weichere Kanten...
     renderer = new THREE.WebGLRenderer({antialias: true});
@@ -91,7 +85,7 @@ function main() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     // Hintergrundfarbe
     renderer.setClearColor("#efefef"); // alternativ: (new THREE.Color(0xefefef))
-    //renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = true; // zeigt generell nirgends Schatten an bei false!
 
     // Wir fügen den Renderer zum HTML Dokument hinzu
     //document.body.appendChild( renderer.domElement );
@@ -130,7 +124,6 @@ function main() {
     ////// OBJEKTE
     // Enthält Verticles und Faces
     let geometry = new THREE.BoxGeometry(1, 1, 1);
-    // #c
     let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
     // Kombiniert Geoemtry und Material zu einem Mesh, das auf der Szene bewegt werden kann
     let cube = new THREE.Mesh(geometry, material);
@@ -145,6 +138,18 @@ function main() {
         true);
     scene.add(tv);
 
+    var tvF = new TVFromFile();
+    tvF.position.set(50,53, 10);
+    tvF.rotateY(-22*DEG_TO_RAD);
+    /*
+    physics.addBox(tvF, 3, // visual object, mass
+        65, 40, 30,       // dimX, dimY, dimZ
+        0, 0, 0,          // offsetX, offsetY, offsetZ
+        0, 0, 0,          // eulerX, eulerY, eulerZ
+        true);*/
+    //scene.add(tvF);
+
+
     var tv2 = new TV();
     tv2.position.set(50,53, 10);
     tv2.rotateY(-22*DEG_TO_RAD);
@@ -153,7 +158,7 @@ function main() {
         0, 0, 0,          // offsetX, offsetY, offsetZ
         0, 0, 0,          // eulerX, eulerY, eulerZ
         true);
-    scene.add(tv2);
+    //scene.add(tv2);
 
     var table = new Table2FromFile();
     table.position.set(0,-21,0);
@@ -175,21 +180,15 @@ function main() {
     //test.object.material.color.setHex(0xffffff);
     scene.add(lamp);
 
-    floor = new Floor(200, 200, 8, 0, -400, 0);
+    floor = new Floor(200, 200, 8);
     scene.add(floor);
 
-    /*
+
     var armchair = new ArmchairFromFile();
     armchair.position.set(-30,-50,175);
     armchair.rotateY(185*DEG_TO_RAD);
-    armchair.scale.set(0.7,0.7,0.7);
+    //armchair.scale.set(0.7,0.7,0.7);
     scene.add(armchair);
-    */
-
-    //var consoleTable = new ConsoleTableFromFile();
-    //consoleTable.position.set(0,-20,0);
-    //scene.add(consoleTable);
-
 
     var stats = new Stats();
     stats.showPanel(0);
