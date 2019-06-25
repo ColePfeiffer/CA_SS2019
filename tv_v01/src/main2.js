@@ -25,6 +25,7 @@ document.write('<script type="text/javascript" src="src/objects/Table2FromFile.j
 document.write('<script type="text/javascript" src="src/objects/TVFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/LampFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ConsoleTableFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/ArmchairFromFile.js"></script>');
 
 document.write('<script type="text/javascript" src="src/objects/BowlFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Lights.js"></script>');
@@ -97,8 +98,6 @@ function main() {
     // Alternativ:
     document.getElementById("3d_content").appendChild(renderer.domElement);
 
-
-
     // #co
     let orbitControls = new THREE.OrbitControls(camera);
     orbitControls.target = new THREE.Vector3(0, 83, 0);
@@ -122,10 +121,13 @@ function main() {
         orbitControls.enabled = true;
     };
 
+
+    // Physics
+    physics = new Physics();
+    physics.initialize(0, -200, 0, 1 / 120, true);
+    physicsVisualDebugger = new THREE.CannonDebugRenderer(scene, physics.getWorld());
+
     ////// OBJEKTE
-
-
-
     // Enthält Verticles und Faces
     let geometry = new THREE.BoxGeometry(1, 1, 1);
     // #c
@@ -134,22 +136,60 @@ function main() {
     let cube = new THREE.Mesh(geometry, material);
 
     var tv = new TV();
-    tv.position.set(0,55,0);
-    //physics.addBox(radio, 3, 30, 20, 8);
+    tv.position.set(-45,53,10);
+    tv.rotateY(22*DEG_TO_RAD);
+    physics.addBox(tv, 3, // visual object, mass
+        65, 40, 30,       // dimX, dimY, dimZ
+        0, 0, 0,          // offsetX, offsetY, offsetZ
+        0, 0, 0,          // eulerX, eulerY, eulerZ
+        true);
     scene.add(tv);
 
+    var tv2 = new TV();
+    tv2.position.set(50,53, 10);
+    tv2.rotateY(-22*DEG_TO_RAD);
+    physics.addBox(tv2, 3, // visual object, mass
+        65, 40, 30,       // dimX, dimY, dimZ
+        0, 0, 0,          // offsetX, offsetY, offsetZ
+        0, 0, 0,          // eulerX, eulerY, eulerZ
+        true);
+    scene.add(tv2);
+
     var table = new Table2FromFile();
-    table.position.set(0,-20,0);
-    //table.scale();
+    table.position.set(0,-21,0);
+    table.rotateY(90*DEG_TO_RAD);
+    //table.scale.set(0.9,0.9,0.9);
+    //physics.addBox(table, 0, 130, 3, 70, 0, 71.5, 0);
+    physics.addBox(table, 0, // visual object, mass
+        138, 222, 2,         // dimX, dimY, dimZ
+        0, 52, 0,             // offsetX, offsetY, offsetZ
+        90*DEG_TO_RAD, 0, 0, // eulerX, eulerY, eulerZ
+        true);
     //scene.add(table);
 
-    var consoleTable = new ConsoleTableFromFile();
-    consoleTable.position.set(0,-20,0);
-    scene.add(consoleTable);
-
     var lamp = new LampFromFile();
-    lamp.position.set(-45,55,-20);
+    lamp.position.set(-75,35,-33);
+    //lamp.scale.set(0.8,0.8,0.8);
+    //let test = lamp.getChildByName()
+    //console.log("yo   "+test);
+    //test.object.material.color.setHex(0xffffff);
     scene.add(lamp);
+
+    floor = new Floor(200, 200, 8, 0, -400, 0);
+    scene.add(floor);
+
+    /*
+    var armchair = new ArmchairFromFile();
+    armchair.position.set(-30,-50,175);
+    armchair.rotateY(185*DEG_TO_RAD);
+    armchair.scale.set(0.7,0.7,0.7);
+    scene.add(armchair);
+    */
+
+    //var consoleTable = new ConsoleTableFromFile();
+    //consoleTable.position.set(0,-20,0);
+    //scene.add(consoleTable);
+
 
     var stats = new Stats();
     stats.showPanel(0);
@@ -162,8 +202,8 @@ function main() {
         stats.begin();
         var delta = clock.getDelta();
 
-        //physics.update(delta);
-        //physicsVisualDebugger.update();
+        physics.update(delta);
+        physicsVisualDebugger.update();
 
         //einschalterAnimation.update(delta);
         //antennenAnimation.update(delta);

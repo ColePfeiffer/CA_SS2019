@@ -2,13 +2,13 @@ LampFromFile = function () {
 
     var lamp = new THREE.Group();
     var objLoader = new THREE.OBJLoader();
-    var path = 'src/models/Lamp_A/eb_lamp_01.obj';
 
-    path = 'src/models/Lamp_A/eb_lamp_01.obj';
-    path = 'src/models/Lamp_A/eb_lamp_01.obj';
+    var path = 'src/models/Lamp_A/';
+    var objname = 'eb_lamp_01.obj';
+    var mtlname = 'eb_lamp_01.mtl';
     //radioAnimationMixer = null;
 
-    objLoader.load(path, function (object) {
+    objLoader.load(path+objname, function (object) {
         lamp.add(object),
 
 
@@ -25,27 +25,22 @@ LampFromFile = function () {
 
             }
 
-        // object.traverse(function(child) {
-        //     if(child.name === "KorpusFBX" || child.name === "AntenneFBX" || child.name === "GriffFBX") {
-        //         child.castShadow = true;
-        //     }
-        // });
-        //
-        // radioAnimationMixer = new THREE.AnimationMixer(object);
-        //
-        // for (var i = 0; i < object.animations.length; i++) {
-        //
-        //     var action = radioAnimationMixer.clipAction(object.animations[i]);
-        //     action.clampWhenFinished = true;
-        //     action.setLoop(THREE.LoopOnce);
-        // }
-    });
+        object.traverse(function(child) {
+            if(child.isMesh) {
+                if(child.id === 75){ // Lampenschirm
+                    child.material.color.setHex(0x63A18B);
+                }else if(child.id === 74){ // Lampensockel
+                    child.material.color.setHex(0x48382A);
+                }
 
-    tvState = {
-        powerOn: false,
-        antennaOut: false,
-        markerRight: false
-    };
+                child.castShadow = true;
+                child.receiveShadow = true;
+
+            }else if(child.isLight){
+                child.visible = true;
+            }
+        });
+    });
 
     return lamp;
 }
