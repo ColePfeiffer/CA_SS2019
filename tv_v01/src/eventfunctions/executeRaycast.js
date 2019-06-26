@@ -36,6 +36,33 @@ function executeRaycast(event) {
 
         }
 
+        if(firstHit.name === "TVBildschirm"){
+
+            console.log(tvAnimationMixer);
+            //tvState.antennaRotated = !tvState.antennaRotated;
+
+            i = 1;
+
+            //tvAnimationMixer.existingAction("Antenne2Action.002").play();
+            //tvAnimationMixer.clipAction(gltfStore.animations[i]).play();
+            /*
+            if(tvAnimationMixer.clipAction(gltfStore.animations[i]).isRunning()){
+                console.log("yoo")
+            }
+
+
+            if (tvState.antennaRotated && !radioAnimationMixer.existingAction("Antenne3Action.007").isRunning()) {
+                radioAnimationMixer.existingAction("Antenne_Action_einfahren").stop();
+                radioAnimationMixer.existingAction("Antenne_Action_ausfahren").play();
+            } else if (!tvState.antennaRotated && !radioAnimationMixer.existingAction("Antenne_Action_ausfahren").isRunning()) {
+                radioAnimationMixer.existingAction("Antenne_Action_ausfahren").stop();
+                radioAnimationMixer.existingAction("Antenne_Action_einfahren").play();
+            }*/
+        }
+
+
+
+
         if (firstHit.name === "EinschalterFBX") {
             radioState.powerOn = !radioState.powerOn;
             if (radioState.powerOn && !radioAnimationMixer.existingAction("Einschalter_Action_aus").isRunning()) {

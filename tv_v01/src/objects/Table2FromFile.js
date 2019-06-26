@@ -10,7 +10,7 @@ Table2FromFile = function () {
     //path = 'src/models/Table/Nightstand/eb_nightstand_01.fbx';
     // Sessel
     //path = 'src/models/Table/1.FBX';
-    path = 'src/models/Table/table1.fbx';
+    path = 'src/models/Table/table0.fbx';
 
 
     fbxloader.load(path, function (object) {
@@ -19,9 +19,10 @@ Table2FromFile = function () {
 
         object.traverse(function(child) {
             if(child.isMesh) {
-                child.material.map.anisotropy = 8;
                 child.castShadow = true;
                 child.receiveShadow = true;
+                child.material.color.setHex(0x5A3517);
+
             }else if(child.isLight){
                 child.visible = false;
             }

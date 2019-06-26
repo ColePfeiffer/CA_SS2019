@@ -3,12 +3,11 @@ var spaceDown = false;
 function keyDownAction(event) {
     switch (event.keyCode) {
         case 32:
+            console.log("ddd");
+
             if (!spaceDown) {
                 spaceDown = true;
 
-                console.log(camera.position);
-
-                /*
                 // Throw a ball
                 var ballRadius = 2;
                 var ballGeometry = new THREE.SphereGeometry(ballRadius, 16, 16);
@@ -24,9 +23,6 @@ function keyDownAction(event) {
                 velocityVectorWC.normalize();
                 velocityVectorWC.multiplyScalar(600);
                 physics.addSphereWithVelocity(ball, 1, ballRadius, velocityVectorWC);
-
-               */
-
             }
             break;
     }
@@ -35,6 +31,7 @@ function keyDownAction(event) {
 function keyUpAction(event) {
     switch (event.keyCode) {
         case 32:
+            console.log("okkk")
             spaceDown = false;
             break;
     }

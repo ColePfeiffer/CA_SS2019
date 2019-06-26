@@ -16,7 +16,6 @@ loader.load(
     path,
     // called when the resource is loaded
     function ( gltf ) {
-
         scene.add( gltf.scene );
 
         gltf.animations; // Array<THREE.AnimationClip>

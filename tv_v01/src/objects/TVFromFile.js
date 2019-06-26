@@ -3,38 +3,30 @@ TVFromFile = function () {
     var tv = new THREE.Group();
     var fbxloader = new THREE.FBXLoader();
 
-    //radioAnimationMixer = null;
+    tvAnimationMixer = null;
 
     fbxloader.load('src/models/BlenderTV/tv.fbx', function (object) {
 
-        tv.add(object),
-            // called when loading is in progresses
-            function ( xhr ) {
+        tv.add(object);
 
-                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+         object.traverse(function(child) {
+             if(child.name === "KorpusFBX" || child.name === "AntenneFBX" || child.name === "GriffFBX") {
+                 child.castShadow = true;
+             }
+        });
 
-            },
-            // called when loading has errors
-            function ( error ) {
+        // Speichert alle Animationen in einen AnimationMixer
+        tvAnimationMixer = new THREE.AnimationMixer(object);
 
-                console.log( 'An error happened' );
+        //tvAnimationMixer.clipAction( gltf.animations[0] ).play();
 
-            }
+        for (var i = 0; i < object.animations.length; i++) {
+            var action = tvAnimationMixer.clipAction(object.animations[i]);
+            action.clampWhenFinished = true;
+            action.setLoop(THREE.LoopOnce);
+        }
 
-        // object.traverse(function(child) {
-        //     if(child.name === "KorpusFBX" || child.name === "AntenneFBX" || child.name === "GriffFBX") {
-        //         child.castShadow = true;
-        //     }
-        // });
-        //
-        // radioAnimationMixer = new THREE.AnimationMixer(object);
-        //
-        // for (var i = 0; i < object.animations.length; i++) {
-        //
-        //     var action = radioAnimationMixer.clipAction(object.animations[i]);
-        //     action.clampWhenFinished = true;
-        //     action.setLoop(THREE.LoopOnce);
-        // }
+        console.log(tvAnimationMixer);
     });
 
     tvState = {

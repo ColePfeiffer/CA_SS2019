@@ -21,6 +21,9 @@ document.write('<script type="text/javascript" src="../../lib/cannon.js-0.6.2/to
 document.write('<script type="text/javascript" src="src/objects/Radio.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TV.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Floor.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/Wall.js"></script>');
+
+document.write('<script type="text/javascript" src="src/objects/Wall2.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/RadioFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/TableFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/Table2FromFile.js"></script>');
@@ -73,6 +76,7 @@ function main() {
         0.1, 1000);
     camera.position.set(0, 150, 150); // Frontalsicht TV
     camera.position.set(0,60,300); // Weiter entfernt
+    camera.position.set(0,60,400); // Weiter entfernt
 
     camera.lookAt(0, 83, 0); // Rotates the object to face a point in world space.
 
@@ -130,6 +134,7 @@ function main() {
     // Kombiniert Geoemtry und Material zu einem Mesh, das auf der Szene bewegt werden kann
     let cube = new THREE.Mesh(geometry, material);
 
+
     var tv = new TV();
     tv.position.set(-45,53,10);
     tv.rotateY(22*DEG_TO_RAD);
@@ -139,55 +144,44 @@ function main() {
         0, 0, 0,          // eulerX, eulerY, eulerZ
         true);
     scene.add(tv);
+
     /*
     var tvF = new TVFromFile();
     tvF.position.set(50,53, 10);
     tvF.rotateY(-22*DEG_TO_RAD);
-    /*
+    tvF.scale.set(0.05,0.05,0.05);
+
     physics.addBox(tvF, 3, // visual object, mass
         65, 40, 30,       // dimX, dimY, dimZ
         0, 0, 0,          // offsetX, offsetY, offsetZ
         0, 0, 0,          // eulerX, eulerY, eulerZ
-        true);*/
-    //scene.add(tvF);
+        true);
+    scene.add(tvF);*/
 
     var tvF = new TVFromFileGlTF();
     tvF.position.set(50,53, 10);
     //tvF.position.set(0,0,0);
 
     tvF.rotateY(-22*DEG_TO_RAD);
-    /*
+
     physics.addBox(tvF, 3, // visual object, mass
         65, 40, 30,       // dimX, dimY, dimZ
         0, 0, 0,          // offsetX, offsetY, offsetZ
         0, 0, 0,          // eulerX, eulerY, eulerZ
-        true);*/
-    //tvF.scale.set(100,100,100);
-    scene.add(tvF);
-
-
-
-    var tv2 = new TV();
-    tv2.position.set(50,53, 10);
-    tv2.rotateY(-22*DEG_TO_RAD);
-    physics.addBox(tv2, 3, // visual object, mass
-        65, 40, 30,       // dimX, dimY, dimZ
-        0, 0, 0,          // offsetX, offsetY, offsetZ
-        0, 0, 0,          // eulerX, eulerY, eulerZ
         true);
-    //scene.add(tv2);
+    tvF.scale.set(7,7,7);
+    scene.add(tvF);
 
     var table = new Table2FromFile();
     table.position.set(0,-21,0);
     table.rotateY(90*DEG_TO_RAD);
     //table.scale.set(0.9,0.9,0.9);
-    //physics.addBox(table, 0, 130, 3, 70, 0, 71.5, 0);
     physics.addBox(table, 0, // visual object, mass
         138, 222, 2,         // dimX, dimY, dimZ
         0, 52, 0,             // offsetX, offsetY, offsetZ
         90*DEG_TO_RAD, 0, 0, // eulerX, eulerY, eulerZ
         true);
-    //scene.add(table);
+    scene.add(table);
 
     var lamp = new LampFromFile();
     lamp.position.set(-75,35,-33);
@@ -197,13 +191,22 @@ function main() {
     //test.object.material.color.setHex(0xffffff);
     scene.add(lamp);
 
-    floor = new Floor(200, 200, 8);
+    floor = new Floor(500, 500, 8);
+    floor.position.set(0, -50, 175);
     scene.add(floor);
 
+    frontwall = new Wall(500, 300, 8);
+    frontwall.position.set(0, 100, -75);
+    scene.add(frontwall);
 
-    var armchair = new ArmchairFromFile();
-    armchair.position.set(-30,-50,175);
-    armchair.rotateY(185*DEG_TO_RAD);
+    sideWall = new Wall2(500, 300, 2, 8);
+    sideWall.position.set(250, 100, 170);
+    sideWall.rotateY(90*DEG_TO_RAD);
+    scene.add(sideWall);
+
+    //var armchair = new ArmchairFromFile();
+    //armchair.position.set(-30,-50,175);
+    //armchair.rotateY(185*DEG_TO_RAD);
     //armchair.scale.set(0.7,0.7,0.7);
     //scene.add(armchair);
 
@@ -216,14 +219,12 @@ function main() {
     function mainLoop() {
 
         stats.begin();
-        var delta = clock.getDelta();
+        delta = clock.getDelta();
 
         physics.update(delta);
         physicsVisualDebugger.update();
 
-        //einschalterAnimation.update(delta);
-        //antennenAnimation.update(delta);
-
+        // Updating all animations
         aniAntennaPart34Retract.update(delta);
         aniAntennaPart234Retract.update(delta);
         aniAntennaFullRotation90Degrees.update(delta);
@@ -231,15 +232,13 @@ function main() {
         aniAdjusterVolumeRotate.update(delta);
         aniButtonInnerPushed.update(delta);
 
-        //if (radioAnimationMixer != null)
-        //   radioAnimationMixer.update(delta);
-
-        //cube.rotation.x += 0.01;
-        //cube.rotation.y += 0.01;
+        if (tvAnimationMixer != null)
+           tvAnimationMixer.update(delta);
 
         // Causes the renderer to redraw the scene every time the screen is refreshed
         renderer.render(scene, camera);
         stats.end();
+
         /*  Jedes Mal, wenn der Bildschirm aktualisiert wird, soll die Szene erneuert werden / neu gerendert werden
         *   requestAnimationFrame pausiert, wenn der Benutzer zu einem anderen Tab wechselt. */
         requestAnimationFrame(mainLoop);
@@ -252,7 +251,7 @@ function main() {
     //window.onclick = onDocumentMouseDown;
     window.onclick = executeRaycast; //#co siehe auch mouseposition und meine gammelfunktion
     window.onkeydown = keyDownAction;
+    window.onkeyup = keyUpAction;
 }
-
 
 window.onload = main;
