@@ -27,9 +27,9 @@ LampFromFile = function () {
 
         object.traverse(function(child) {
             if(child.isMesh) {
-                if(child.id === 75){ // Lampenschirm
-                    child.material.color.setHex(0x63A18B);
-                }else if(child.id === 74){ // Lampensockel
+                if(child.id === 61){ // Lampenschirm
+                    child.material.color.setHex(0xE78B41);
+                }else if(child.id === 60){ // Lampensockel
                     child.material.color.setHex(0x48382A);
                 }
 
@@ -41,6 +41,10 @@ LampFromFile = function () {
             }
         });
     });
+
+    lampState = {
+        powerOn: false
+    };
 
     return lamp;
 }

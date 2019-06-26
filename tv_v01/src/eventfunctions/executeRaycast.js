@@ -5,30 +5,48 @@ function executeRaycast(event) {
     raycaster.setFromCamera(mousePosition, camera);
     var intersects = raycaster.intersectObjects(scene.children, true);
 
-    //console.log(mousePosition);
+    console.log(mousePosition);
     if (intersects.length > 0) {
 
         var firstHit = intersects[0].object;
         console.log(firstHit);
 
+        // Färbt Materials um
         if (shiftDown) {
             intersects[0].object.material.color.setHex(Math.random() * 0xffffff);
+        }
+
+        if (firstHit.name === "eb_lamp_01_low c_low"){
+            if (lampState.powerOn) {
+                console.log("lampe ausmachen")
+                lampLight.visible = false;
+                lampState.powerOn = !lampState.powerOn;
+            }
+            else{
+                console.log("lampe anmachen");
+                lampLight.visible = true;
+                lampState.powerOn = !lampState.powerOn;
+            }
         }
 
         if (firstHit.name === "OnOff_Button_Inner") {
             // Animation fehlt noch
             // Wenn Power bereits an ist, dann mach aus
             if (tvState.powerOn && tvState.channel1) {
+                console.log("tv ausmachen, channel ausmachen")
                 video2.pause();
                 screenMaterial.map = blackVideoScreen;
                 tvState.powerOn = !tvState.powerOn;
+                tvState.channel1 = !tvState.channel1;
             } else if (tvState.powerOn) {
+                console.log("tv ausmachen")
                 video1.pause();
                 screenMaterial.map = blackVideoScreen;
                 tvState.powerOn = !tvState.powerOn;
             }
             // Wenn Power aus ist, dann schalte ein
-            else if (!tvState.powerOn) {
+            else if (!tvState.powerOn){
+                console.log("tv anmachen");
                 tvState.powerOn = !tvState.powerOn;
                 screenMaterial.map = videoTexture1;
                 video1.play();
@@ -37,6 +55,7 @@ function executeRaycast(event) {
 
         if (firstHit.name === "Adjuster_Channel") {
             if (tvState.powerOn && !tvState.channel1) {
+                console.log("tv an, channel anmachen")
                 video1.pause();
                 screenMaterial.map = blackVideoScreen;
                 tvState.channel1 = !tvState.channel1;
@@ -44,12 +63,16 @@ function executeRaycast(event) {
                 video2.play();
                 // Wenn Power aus ist, dann schalte ein
             }else if (tvState.powerOn && tvState.channel1){
+                console.log("tv an, channel ausmachen")
                 video2.pause();
                 screenMaterial.map = blackVideoScreen;
                 tvState.channel1 = !tvState.channel1;
+                screenMaterial.map = videoTexture1;
+                video1.play();
+
+            }else{
+                console.log("turn on tv first");
             }
-        } else {
-            console.log("turn on tv first");
         }
 
         if (firstHit.name === "antenna_Part_2" || firstHit.name === "antenna_Part_1" || firstHit.name === "Adjuster_Channel"

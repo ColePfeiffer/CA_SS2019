@@ -9,7 +9,7 @@ TV = function () {
 
     // ____ Elements _____
     let corpusGeo = new THREE.BoxGeometry(65, 40, 30);
-    let corpusMat = new THREE.MeshLambertMaterial({color: 0xDF9136});
+    let corpusMat = new THREE.MeshLambertMaterial({color: 0xEFE52A});
     let corpus = new THREE.Mesh(corpusGeo, corpusMat);
     corpus.position.set(0,0,0);
     corpus.castShadow = true;
@@ -17,7 +17,7 @@ TV = function () {
     tv.add(corpus);
 
 
-    let screenBGeo = new THREE.BoxGeometry(45, 33, 5);
+    let screenBGeo = new THREE.BoxGeometry(40, 30, 5);
     let screenBMat = new THREE.MeshLambertMaterial({color: 0x302f30});
     let screenBase = new THREE.Mesh(screenBGeo, screenBMat);
     screenBase.position.x = -6;
@@ -28,7 +28,7 @@ TV = function () {
     screenBase.receiveShadow = true;
     tv.add(screenBase);
 
-    let screenGeo = new THREE.PlaneGeometry(45,33);
+    let screenGeo = new THREE.PlaneGeometry(40,30);
     screenMaterial = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
     screenMaterial.map = blackVideoScreen;
     screenMaterial.needsUpdate = true;
@@ -39,27 +39,16 @@ TV = function () {
     screen.name = "Screen"
     tv.add(screen);
 
-    /*
-    //Add screen to TV
-    var screenGeometry = new THREE.PlaneGeometry(40,27);
-    screenMaterial = new THREE.MeshLambertMaterial({
-        color: 0xFFFFFF
-    });
-    screenMaterial.map = blackVideoScreen;
-    screenMaterial.needsUpdate = true;
-    var screen = new THREE.Mesh(screenGeometry, screenMaterial);
-    screen.position.set(-1,79,-92);
-    scene.add(screen);
-
-    scene.add(tv);*/
-
-
-
-
-
-
     let panelGeo = new THREE.BoxGeometry(10, 30, 1.5);
     let panelMat = new THREE.MeshLambertMaterial({color: 0xcea25a});
+
+    var floorTexture = new THREE.TextureLoader().load("src/images/wood01.jpg");
+    floorTexture.wrapS = THREE.RepeatWrapping;
+    floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(4, 4);
+
+    panelMat.map = floorTexture;
+
     let panel = new THREE.Mesh(panelGeo, panelMat);
     panel.position.x = 24;
     panel.position.y = 0;
@@ -80,7 +69,7 @@ TV = function () {
 
     var adjusterGeo = new THREE.BoxGeometry(4, 0.8, 1.5);
     var adjusterMat = new THREE.MeshLambertMaterial({
-        color: 0xFF0000
+        color: 0x000000
     });
 
     var adjusterChannel = new THREE.Mesh(adjusterGeo, adjusterMat);
@@ -92,7 +81,7 @@ TV = function () {
 
     var adjusterExtrapieceGeo = new THREE.BoxGeometry(1, 0.9, 1);
     var adjusterExtrapieceMat = new THREE.MeshLambertMaterial({
-        color: 0x000000
+        color: 0x731609
     });
     var adjusterExtrapieceChannel = new THREE.Mesh(adjusterExtrapieceGeo, adjusterExtrapieceMat);
 
@@ -145,7 +134,7 @@ TV = function () {
 
     var muteButtonInnerGeo = new THREE.SphereGeometry(1.7,10, 10);
     var muteButtonInnerMat = new THREE.MeshLambertMaterial({
-        color: 0xFF0000
+        color: 0x731609
     });
     var muteButtonInner = new THREE.Mesh(muteButtonInnerGeo, muteButtonInnerMat);
     muteButtonInner.position.x = 24;
@@ -173,7 +162,7 @@ TV = function () {
 
     var onOffButtonInnerGeo = new THREE.SphereGeometry(1.7,10, 10);
     var onOffButtonInnerMat = new THREE.MeshLambertMaterial({
-        color: 0xFF0000
+        color: 0x731609
     });
     var onOffButtonInner = new THREE.Mesh(onOffButtonInnerGeo, onOffButtonInnerMat);
     onOffButtonInner.position.x = 24;
@@ -196,7 +185,7 @@ TV = function () {
 
     var markerFreqGeo = new THREE.BoxGeometry(0.5, 0.8, 1);
     var markerFreqMat = new THREE.MeshLambertMaterial({
-        color: 0xFF0000
+        color: 0x731609
     });
     var markerFreq = new THREE.Mesh(markerFreqGeo, markerFreqMat);
     markerFreq.position.x = 24;

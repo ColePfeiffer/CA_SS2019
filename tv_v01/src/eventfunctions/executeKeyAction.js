@@ -4,7 +4,6 @@ shiftDown = false;
 function keyDownAction(event) {
     switch (event.keyCode) {
         case 32:
-
             if (!spaceDown) {
                 spaceDown = true;
 
@@ -20,6 +19,7 @@ function keyDownAction(event) {
 
                 var directionalVectorDC = new THREE.Vector3(0, 0, 1);
                 var velocityVectorWC = directionalVectorDC.unproject(camera);
+                //var velocityVectorWC = directionalVectorDC.unproject(mousePosition);
                 velocityVectorWC.normalize();
                 velocityVectorWC.multiplyScalar(600);
                 physics.addSphereWithVelocity(ball, 1, ballRadius, velocityVectorWC);

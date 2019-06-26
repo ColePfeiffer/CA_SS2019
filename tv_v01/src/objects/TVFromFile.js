@@ -13,6 +13,23 @@ TVFromFile = function () {
              if(child.isMesh){
                  child.castShadow = true;
              }
+
+             switch (child.name) {
+                 case "TVKorpus":
+                     child.material.color.setHex(0xEFE52A);
+                     break;
+                 case "SchalterFläche":
+                     child.material.color.setHex(0x563714);
+                     break;
+                 case "AntenneBoden":
+                     child.material.color.setHex(0x6D6D6D);
+                     break;
+
+                 case "LayoutPegel1":
+                     child.material.color.setHex(0x00FF00);
+                     break;
+
+             }
          });
 
         // Speichert alle Animationen in einen AnimationMixer

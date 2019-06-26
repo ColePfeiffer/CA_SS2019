@@ -10,9 +10,9 @@ Lights = function () {
         return ambientLight;
     }
 
-    this.createSpotLight = function (xPos, yPos, zPos) {
+    this.createSpotLight = function (xPos, yPos, zPos, color=0xffffff) {
 
-        var spotLight = new THREE.SpotLight(0xffffff);
+        var spotLight = new THREE.SpotLight(color);
         spotLight.position.set(xPos, yPos, zPos);
         spotLight.intensity = 0.5;
         spotLight.target = scene;                   // Schaut auf (0,0,0)
@@ -30,9 +30,9 @@ Lights = function () {
         return spotLight;
     }
 
-    this.createDirectionalLight = function (xPos, yPos, zPos) {
+    this.createDirectionalLight = function (xPos, yPos, zPos, color=0xffffff) {
 
-        var directionaLight = new THREE.DirectionalLight(0xffffff);
+        var directionaLight = new THREE.DirectionalLight(color);
         directionaLight.position.set(xPos, yPos, zPos);
         directionaLight.lookAt(scene.position);
         directionaLight.intensity = 0.7;

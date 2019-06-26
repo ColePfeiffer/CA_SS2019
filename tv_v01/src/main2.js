@@ -32,7 +32,7 @@ document.write('<script type="text/javascript" src="src/objects/TVFromFileGlTF.j
 document.write('<script type="text/javascript" src="src/objects/LampFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ConsoleTableFromFile.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/ArmchairFromFile.js"></script>');
-document.write('<script type="text/javascript" src="src/objects/BowlFromFile.js"></script>');
+document.write('<script type="text/javascript" src="src/objects/FrameFromFile.js"></script>');
 
 // Andere Skripts
 document.write('<script type="text/javascript" src="src/objects/Lights.js"></script>');
@@ -98,7 +98,7 @@ function main() {
     camera.position.set(0,60,300); // Weiter entfernt
     camera.position.set(0,60,400); // Weiter entfernt
 
-    camera.lookAt(0, 83, 0); // Rotates the object to face a point in world space.
+    //camera.lookAt(0, 83, 0); // Rotates the object to face a point in world space.
 
     /* Renderer
     * */
@@ -129,8 +129,19 @@ function main() {
     var directionalLight = lights.createDirectionalLight(-30, 200, 100);
     scene.add(directionalLight);
 
+
+    lampLight = lights.createSpotLight(-75,35,0, 0xff0000);
+    lampLight.position.set(90,100, 6);
+    lampLight.intensity = 1.8;
+    lampLight.visible = false;
+    scene.add(lampLight);
+
+
+
     //#co
     var gui = new dat.GUI();
+    var test = "test";
+    gui.add(directionalLight, "intensity", 0, 0.7);
     gui.add(directionalLight.position, "x", -100, 100);
     gui.add(directionalLight.position, "y", -100, 100);
     gui.add(directionalLight.position, "z", -100, 100);
@@ -169,7 +180,7 @@ function main() {
     var tvF = new TVFromFile();
     tvF.position.set(50,53, 10);
     tvF.rotateY(-22*DEG_TO_RAD);
-    tvF.scale.set(0.05,0.05,0.05);
+    tvF.scale.set(0.0450,0.0433,0.0420);
 
     physics.addBox(tvF, 3, // visual object, mass
         65, 40, 30,       // dimX, dimY, dimZ
@@ -178,6 +189,7 @@ function main() {
         true);
     scene.add(tvF);/*
 
+    // Falls der Fernseher doch wieder als glTF-Datei eingebunden werden soll:
     var tvF = new TVFromFileGlTF();
     tvF.position.set(50,53, 10);
     //tvF.position.set(0,0,0);
@@ -206,9 +218,6 @@ function main() {
     var lamp = new LampFromFile();
     lamp.position.set(-75,35,-33);
     //lamp.scale.set(0.8,0.8,0.8);
-    //let test = lamp.getChildByName()
-    //console.log("yo   "+test);
-    //test.object.material.color.setHex(0xffffff);
     scene.add(lamp);
 
     floor = new Floor(500, 500, 8);
@@ -223,6 +232,27 @@ function main() {
     sideWall.position.set(250, 100, 170);
     sideWall.rotateY(90*DEG_TO_RAD);
     scene.add(sideWall);
+
+    // Frame
+    let frame = new FrameFromFile();
+    frame.position.set(0,100,-60);
+    //lamp.scale.set(0.8,0.8,0.8);
+    frame.rotateX(90*DEG_TO_RAD);
+    scene.add(frame);
+
+    // Bild
+    let bildGeo = new THREE.BoxGeometry(30, 50, 2);
+    let bildMat = new THREE.MeshLambertMaterial({color: 0xcea25a});
+
+    var imgTex = new THREE.TextureLoader().load("src/images/bild.jpg");
+    imgTex.wrapS = THREE.RepeatWrapping;
+    imgTex.wrapT = THREE.RepeatWrapping;
+
+    bildMat.map = imgTex;
+
+    let bild = new THREE.Mesh(bildGeo, bildMat);
+    bild.position.set(0, 100, -75);
+    scene.add(bild);
 
     //var armchair = new ArmchairFromFile();
     //armchair.position.set(-30,-50,175);

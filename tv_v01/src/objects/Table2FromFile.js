@@ -11,7 +11,7 @@ Table2FromFile = function () {
     // Sessel
     //path = 'src/models/Table/1.FBX';
     path = 'src/models/Table/table0.fbx';
-
+    let texpath = 'src/images/wood02.jpg';
 
     fbxloader.load(path, function (object) {
         table.add(object);
@@ -22,6 +22,20 @@ Table2FromFile = function () {
                 child.castShadow = true;
                 child.receiveShadow = true;
                 child.material.color.setHex(0x5A3517);
+
+                if(child.id === 55) { // Tischplatte
+                    console.log("hat er gemacht?")
+                    var floorTexture = new THREE.TextureLoader().load(texpath);
+                    floorTexture.wrapS = THREE.RepeatWrapping;
+                    floorTexture.wrapT = THREE.RepeatWrapping;
+                    floorTexture.repeat.set(4, 4);
+
+                    floorMaterial.map = floorTexture;
+
+                    child.material = floorMaterial;
+                    //child.material.color.setHex(0xE78B41);
+                }
+
 
             }else if(child.isLight){
                 child.visible = false;
