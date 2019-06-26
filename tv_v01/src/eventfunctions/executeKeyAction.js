@@ -1,9 +1,9 @@
 var spaceDown = false;
+shiftDown = false;
 
 function keyDownAction(event) {
     switch (event.keyCode) {
         case 32:
-            console.log("ddd");
 
             if (!spaceDown) {
                 spaceDown = true;
@@ -25,14 +25,25 @@ function keyDownAction(event) {
                 physics.addSphereWithVelocity(ball, 1, ballRadius, velocityVectorWC);
             }
             break;
+
+        case 16:
+            console.log("Shift")
+
+            if(!shiftDown){
+                shiftDown = true;
+            }
     }
 }
 
 function keyUpAction(event) {
     switch (event.keyCode) {
         case 32:
-            console.log("okkk")
             spaceDown = false;
+            break;
+
+        case 16:
+            shiftDown = false;
             break;
     }
 }
+

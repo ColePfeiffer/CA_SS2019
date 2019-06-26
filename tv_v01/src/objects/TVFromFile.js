@@ -10,10 +10,10 @@ TVFromFile = function () {
         tv.add(object);
 
          object.traverse(function(child) {
-             if(child.name === "KorpusFBX" || child.name === "AntenneFBX" || child.name === "GriffFBX") {
+             if(child.isMesh){
                  child.castShadow = true;
              }
-        });
+         });
 
         // Speichert alle Animationen in einen AnimationMixer
         tvAnimationMixer = new THREE.AnimationMixer(object);
@@ -31,8 +31,10 @@ TVFromFile = function () {
 
     tvState = {
         powerOn: false,
+        channel1: false,
         antennaOut: false,
-        markerRight: false
+        markerRight: false,
+        currentVideoPlaying: null
     };
 
     return tv;

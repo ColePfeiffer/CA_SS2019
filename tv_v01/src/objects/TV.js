@@ -1,3 +1,5 @@
+var screenMaterial;
+
 TV = function () {
 
     let tv = new THREE.Object3D();
@@ -10,17 +12,51 @@ TV = function () {
     let corpusMat = new THREE.MeshLambertMaterial({color: 0xDF9136});
     let corpus = new THREE.Mesh(corpusGeo, corpusMat);
     corpus.position.set(0,0,0);
+    corpus.castShadow = true;
+    corpus.receiveShadow = true;
     tv.add(corpus);
 
-    let screenGeo = new THREE.BoxGeometry(45, 33, 5);
-    let screenMat = new THREE.MeshLambertMaterial({color: 0x302f30});
-    let screen = new THREE.Mesh(screenGeo, screenMat);
+
+    let screenBGeo = new THREE.BoxGeometry(45, 33, 5);
+    let screenBMat = new THREE.MeshLambertMaterial({color: 0x302f30});
+    let screenBase = new THREE.Mesh(screenBGeo, screenBMat);
+    screenBase.position.x = -6;
+    screenBase.position.y = 0;
+    screenBase.position.z = 15;
+    screenBase.name = "Screenbase";
+    screenBase.castShadow = true;
+    screenBase.receiveShadow = true;
+    tv.add(screenBase);
+
+    let screenGeo = new THREE.PlaneGeometry(45,33);
+    screenMaterial = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
+    screenMaterial.map = blackVideoScreen;
+    screenMaterial.needsUpdate = true;
+    let screen = new THREE.Mesh(screenGeo, screenMaterial);
     screen.position.x = -6;
     screen.position.y = 0;
-    screen.position.z = 15;
-    screen.name = "Screen";
-    //screen.castShadow(true);
+    screen.position.z = 18;
+    screen.name = "Screen"
     tv.add(screen);
+
+    /*
+    //Add screen to TV
+    var screenGeometry = new THREE.PlaneGeometry(40,27);
+    screenMaterial = new THREE.MeshLambertMaterial({
+        color: 0xFFFFFF
+    });
+    screenMaterial.map = blackVideoScreen;
+    screenMaterial.needsUpdate = true;
+    var screen = new THREE.Mesh(screenGeometry, screenMaterial);
+    screen.position.set(-1,79,-92);
+    scene.add(screen);
+
+    scene.add(tv);*/
+
+
+
+
+
 
     let panelGeo = new THREE.BoxGeometry(10, 30, 1.5);
     let panelMat = new THREE.MeshLambertMaterial({color: 0xcea25a});
@@ -29,6 +65,7 @@ TV = function () {
     panel.position.y = 0;
     panel.position.z = 15
     panel.name = "Panel";
+    panel.receiveShadow = true;
     tv.add(panel);
 
     let channelGeo = new THREE.CylinderGeometry(2.5, 2.5, 5, 32, 1, false);
@@ -187,6 +224,8 @@ TV = function () {
     //antennaPlate.rotation.x = 90 * DEG_TO_RAD;
     antennaPlate.name = "antenna_Plate";
     tv.add(antennaPlate);
+    antennaPlate.castShadow = true;
+    antennaPlate.receiveShadow = true;
 
     var antennaBaseGeo = new THREE.SphereGeometry(2,10, 10);
     var antennaBase = new THREE.Mesh(antennaBaseGeo, metallMaterial);
@@ -194,6 +233,8 @@ TV = function () {
     antennaBase.position.y = 20;
     antennaBase.position.z = 8;
     antennaBase.name = "antenna_Base";
+    antennaBase.receiveShadow = true;
+    antennaBase.castShadow = true;
     tv.add(antennaBase);
 
     var antennaPart1Geo = new THREE.CylinderGeometry(0.5, 0.5, 33, 20, 1, false);
@@ -207,7 +248,8 @@ TV = function () {
     antennaPart1.position.y = 21.5; //38
     antennaPart1.position.z = 8;
     antennaPart1.name = "antenna_Part_1";
-
+    antennaPart1.castShadow = true;
+    antennaPart1.receiveShadow = true;
 
     var antennaPart2Geo = new THREE.CylinderGeometry(0.3, 0.3, 20, 32, 1, false);
     var antennaPart2 = new THREE.Mesh(antennaPart2Geo, metallMaterial);
@@ -216,6 +258,9 @@ TV = function () {
         Siehe Zeile 229. */
     antennaPart2.position.y = 43;
     antennaPart2.name = "antenna_Part_2";
+    antennaPart2.castShadow = true;
+    antennaPart2.receiveShadow = true;
+
 
     // Mergen von Meshes in ein einziges Geometry-Objekt, in diesem Fall Antennenpart 3 und 4
     var antennaPart3Geo = new THREE.CylinderGeometry(0.125, 0.125, 12, 32, 1, false);
@@ -240,6 +285,8 @@ TV = function () {
     var antenna34Merged = new THREE.Mesh(antenna34MergedGeo, metallMaterial);
     antenna34Merged.position.y = 59;
     antenna34Merged.name = "antenna_Part_3";
+    antenna34Merged.castShadow = true;
+    antenna34Merged.receiveShadow = true;
 
     // Animation für Part 3 und 4, die zu einem Mesh zusammengebündelt sind und beide bewegt werden
     aniAntennaPart34Retract = new Animation(antenna34Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
@@ -252,6 +299,9 @@ TV = function () {
     antenna234Merged = new THREE.Object3D();
     antenna234Merged.add(antenna34Merged);
     antenna234Merged.add(antennaPart2);
+    antenna234Merged.castShadow = true;
+    antenna234Merged.receiveShadow = true;
+
     // Animation für Part 2
     aniAntennaPart234Retract = new Animation(antenna234Merged, AnimationType.TRANSLATION, AnimationAxis.Y);
     aniAntennaPart234Retract.setAmount(-18.5);

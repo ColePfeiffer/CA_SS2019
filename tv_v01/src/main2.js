@@ -60,6 +60,26 @@ function main() {
 
     scene = new THREE.Scene();
 
+    video1 = document.createElement("video");
+    video1.loop = true;
+    video1.src = "src/videos/rauschen.mp4";
+    videoTexture1 = new THREE.VideoTexture(video1);
+    videoTexture1.minFilter = THREE.LinearFilter;
+    videoTexture1.magFilter = THREE.LinearFilter;
+    videoTexture1.format = THREE.RGBFormat;
+    videoTexture1.needsUpdate = true;
+
+    blackVideoScreen = new THREE.TextureLoader().load('src/videos/backgroundScreen.png');
+
+    video2 = document.createElement("video");
+    video2.loop = true;
+    video2.src = "src/videos/video2.mp4";
+    videoTexture2 = new THREE.VideoTexture(video2);
+    videoTexture2.minFilter = THREE.LinearFilter;
+    videoTexture2.magFilter = THREE.LinearFilter;
+    videoTexture2.format = THREE.RGBFormat;
+    videoTexture2.needsUpdate = true;
+
     /* Camera
     * Parameter:
     * FOV = Field of View: Sichtfeld
@@ -145,7 +165,7 @@ function main() {
         true);
     scene.add(tv);
 
-    /*
+
     var tvF = new TVFromFile();
     tvF.position.set(50,53, 10);
     tvF.rotateY(-22*DEG_TO_RAD);
@@ -156,7 +176,7 @@ function main() {
         0, 0, 0,          // offsetX, offsetY, offsetZ
         0, 0, 0,          // eulerX, eulerY, eulerZ
         true);
-    scene.add(tvF);*/
+    scene.add(tvF);/*
 
     var tvF = new TVFromFileGlTF();
     tvF.position.set(50,53, 10);
@@ -170,7 +190,7 @@ function main() {
         0, 0, 0,          // eulerX, eulerY, eulerZ
         true);
     tvF.scale.set(7,7,7);
-    scene.add(tvF);
+    scene.add(tvF);*/
 
     var table = new Table2FromFile();
     table.position.set(0,-21,0);
@@ -249,7 +269,8 @@ function main() {
     window.onresize = updateAspectRatio;
     window.onmousemove = calculateMousePosition;
     //window.onclick = onDocumentMouseDown;
-    window.onclick = executeRaycast; //#co siehe auch mouseposition und meine gammelfunktion
+    window.onclick = executeRaycast;
+    //#co siehe auch mouseposition und meine gammelfunktion
     window.onkeydown = keyDownAction;
     window.onkeyup = keyUpAction;
 }
