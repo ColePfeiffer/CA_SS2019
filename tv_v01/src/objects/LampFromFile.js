@@ -27,9 +27,15 @@ LampFromFile = function () {
 
         object.traverse(function(child) {
             if(child.isMesh) {
+
+                // Alternativ zur ID-Abfrage, die leider dynamisch ist
+                if(child.material.name === "blinn5SG"){
+                    child.material.color.setHex(0xE78B41);
+                }
+
                 if(child.id === 61){ // Lampenschirm
                     child.material.color.setHex(0xE78B41);
-                }else if(child.id === 60){ // Lampensockel
+                }else if(child.id === 65){ // Lampensockel
                     child.material.color.setHex(0x48382A);
                 }
 

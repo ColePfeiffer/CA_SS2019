@@ -14,7 +14,7 @@ FrameFromFile = function () {
             if(child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-                child.material.color.setHex(0xffD700);
+                child.material.color.setHex(0xff0000);
 
             }else if(child.isLight){
                 child.visible = false;

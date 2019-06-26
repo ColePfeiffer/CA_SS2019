@@ -234,14 +234,16 @@ function main() {
     scene.add(sideWall);
 
     // Frame
+    /*
     let frame = new FrameFromFile();
     frame.position.set(0,100,-60);
     //lamp.scale.set(0.8,0.8,0.8);
     frame.rotateX(90*DEG_TO_RAD);
     scene.add(frame);
+    */
 
     // Bild
-    let bildGeo = new THREE.BoxGeometry(30, 50, 2);
+    let bildGeo = new THREE.BoxGeometry(75, 110, 2);
     let bildMat = new THREE.MeshLambertMaterial({color: 0xcea25a});
 
     var imgTex = new THREE.TextureLoader().load("src/images/bild.jpg");
@@ -251,14 +253,14 @@ function main() {
     bildMat.map = imgTex;
 
     let bild = new THREE.Mesh(bildGeo, bildMat);
-    bild.position.set(0, 100, -75);
+    bild.position.set(0, 125, -75);
     scene.add(bild);
 
-    //var armchair = new ArmchairFromFile();
-    //armchair.position.set(-30,-50,175);
-    //armchair.rotateY(185*DEG_TO_RAD);
-    //armchair.scale.set(0.7,0.7,0.7);
-    //scene.add(armchair);
+    var armchair = new ArmchairFromFile();
+    armchair.position.set(-30,-50,175);
+    armchair.rotateY(185*DEG_TO_RAD);
+    armchair.scale.set(1.05,1.05,1.05);
+    scene.add(armchair);
 
     var stats = new Stats();
     stats.showPanel(0);
